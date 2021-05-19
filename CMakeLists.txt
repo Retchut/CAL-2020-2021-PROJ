@@ -30,6 +30,9 @@ file(GLOB FILES CONFIGURE_DEPENDS
 
 add_executable(main
         main.cpp
+        src/graph.cpp
+        src/airport.cpp
+        src/connection.cpp
         ${FILES}
         )
 
