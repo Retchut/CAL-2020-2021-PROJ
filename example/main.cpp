@@ -1,10 +1,10 @@
 #include <iostream>
 
-void ex1();
+void example1();
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
-    ex1();
+    example1();
 
     return 0;
 }

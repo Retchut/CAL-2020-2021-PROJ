@@ -11,29 +11,24 @@ set(GRAPHVIEWERCPP_PATH lib/GraphViewerCpp)
 add_subdirectory(${GRAPHVIEWERCPP_PATH})
 include_directories(${GRAPHVIEWERCPP_PATH}/include)
 
-
-file(GLOB TEST_FILES CONFIGURE_DEPENDS
-        "example/test/*.cpp"
+file(GLOB EXAMPLE_FILES CONFIGURE_DEPENDS
+        "example/*.cpp"
         )
 
-add_executable(Test
-        example/test/main.cpp
-        ${TEST_FILES}
+file(GLOB PROJ_FILES CONFIGURE_DEPENDS
+        "src/*.cpp"
         )
 
-target_link_libraries(Test graphviewer)
-
-
-file(GLOB FILES CONFIGURE_DEPENDS
-        "./*.cpp"
+add_executable(Example
+        example/main.cpp
+        ${EXAMPLE_FILES}
         )
 
-add_executable(main
-        main.cpp
-        src/graph.cpp
-        src/airport.cpp
-        src/connection.cpp
-        ${FILES}
+add_executable(Proj
+        src/main.cpp
+        ${PROJ_FILES}
         )
 
-target_link_libraries(main graphviewer)
+target_link_libraries(Example graphviewer)
+target_link_libraries(Proj graphviewer)
+
