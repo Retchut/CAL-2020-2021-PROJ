@@ -19,7 +19,7 @@ class Airport {
 	bool processing;       // auxiliary field used by isDAG
 	int indegree;          // auxiliary field used by topsort
 
-	void addConnection(Airport *d, double dist);
+	void addConnection(const int& conId, Airport *d, double dist);
 	bool removeConnectionTo(Airport *d);
     bool removeConnections();
 public:
