@@ -1,19 +1,33 @@
 #include "airport.h"
 
+#include <utility>
+
 #include "connection.h"
 
-Airport::Airport(std::string l, std::string w) : location(l), weather(w) {}
+Airport::Airport(const int &id, const double &latitude, const double &longitude) : id(id), latitude(latitude),
+                                                                                   longitude(longitude), visited(false),
+                                                                                   processing(false), indegree(0) {}
+
+Airport::Airport(const int &id, const double &latitude, const double &longitude, std::string name) : id(id),
+                                                                                                     name(std::move(
+                                                                                                             name)),
+                                                                                                     latitude(latitude),
+                                                                                                     longitude(
+                                                                                                             longitude),
+                                                                                                     visited(false),
+                                                                                                     processing(false),
+                                                                                                     indegree(0) {}
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
  * with a given destination vertex (d) and edge weight (w).
  */
 void Airport::addConnection(Airport *d, double dist) {
-    for(auto c : this->connections){
-        if(c.dest == d)
+    for (auto c : this->connections) {
+        if (c.dest == d)
             return;     //already exists
     }
-    this->connections.push_back(Connection(this, d, dist));
+    this->connections.emplace_back(Connection(this, d, dist));
 }
 
 /*
@@ -23,8 +37,8 @@ void Airport::addConnection(Airport *d, double dist) {
  */
 bool Airport::removeConnectionTo(Airport *d) {
     auto it = this->connections.begin();
-    for(it; it != this->connections.end(); it++){
-        if((*it).dest == d){
+    for (it; it != this->connections.end(); it++) {
+        if ((*it).dest == d) {
             this->connections.erase(it);
             return true;
         }
@@ -39,4 +53,8 @@ bool Airport::removeConnectionTo(Airport *d) {
 bool Airport::removeConnections() {
     this->connections.clear();
     return this->connections.empty();
+}
+
+Airport::~Airport() {
+    connections.clear();
 }

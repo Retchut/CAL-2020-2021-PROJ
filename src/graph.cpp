@@ -9,20 +9,28 @@ int Graph::getAirportNum() const {
 /*
  * Auxiliary function to find an airport with a given location.
  */
-Airport * Graph::findAirport(std::string l) const {
+Airport * Graph::findAirport(const int& id) const {
 	for (auto a : airportSet)
-		if (a->location == l)
+		if (a->id == id)
 			return a;
-	return NULL;
+	return nullptr;
 }
 
 /*
  *  Adds an airport with a given location to a graph (this).
  *  Returns true if successful, and false if an Airport with that content already exists.
  */
-bool Graph::addAirport(std::string l, std::string w) {
-    if(findAirport(l) == NULL){
-        airportSet.push_back(new Airport(l, w));
+bool Graph::addAirport(const int& id, const double& latitude, const double& longitude) {
+    if(findAirport(id) == nullptr){
+        airportSet.push_back(new Airport(id, latitude, longitude));
+        return true;
+    }
+    return false;
+}
+
+bool Graph::addAirport(const int& id, const double& latitude, const double& longitude, const std::string& name) {
+    if(findAirport(id) == nullptr){
+        airportSet.push_back(new Airport(id, latitude, longitude, name));
         return true;
     }
     return false;
@@ -33,10 +41,10 @@ bool Graph::addAirport(std::string l, std::string w) {
  * The Connection is identified by its origin and ending locations.
  * Returns true if successful, and false if such Airport does not exist.
  */
-bool Graph::removeConnection(std::string ls, std::string ld) {
-    auto a1 = findAirport(ls);
-    auto a2 = findAirport(ld);
-    if(a1 == NULL || a2 == NULL)
+bool Graph::removeConnection(const int& ida, const int& idb) {
+    auto a1 = findAirport(ida);
+    auto a2 = findAirport(idb);
+    if(a1 == nullptr || a2 == nullptr)
         return false;
     return a1->removeConnectionTo(a2);
 }
@@ -47,10 +55,10 @@ bool Graph::removeConnection(std::string ls, std::string ld) {
  * Returns true if successful, and false if either of the source or
  * destination Airports do not exist.
  */
-bool Graph::addConnection(std::string l, std::string d, double dist) {
-    auto a1 = findAirport(l);
-    auto a2 = findAirport(d);
-    if(a1 == NULL || a2 == NULL)
+bool Graph::addConnection(const int& source, const int& destination, double dist = 0.0) const {
+    auto a1 = findAirport(source);
+    auto a2 = findAirport(destination);
+    if(a1 == nullptr || a2 == nullptr)
         return false;
     a1->addConnection(a2, dist);
     return true;
@@ -61,9 +69,9 @@ bool Graph::addConnection(std::string l, std::string d, double dist) {
  *  all outgoing and incoming edges.
  *  Returns true if successful, and false if such vertex does not exist.
  */
-bool Graph::removeAirport(std::string l) {
-    Airport *a = findAirport(l);
-    if(a == NULL)
+bool Graph::removeAirport(const int& id) {
+    Airport *a = findAirport(id);
+    if(a == nullptr)
         return false;
     for(auto it = airportSet.begin(); it != airportSet.end(); it++){
         if((*it) == a){
@@ -74,4 +82,10 @@ bool Graph::removeAirport(std::string l) {
         }
     }
     return false;
+}
+
+Graph::~Graph() {
+    for(Airport* airport : airportSet){
+        delete airport;
+    }
 }

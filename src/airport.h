@@ -7,8 +7,10 @@
 class Connection;
 
 class Airport {
-	//location
-    std::string location;
+	int id;
+    //location
+    std::string name;
+    double latitude, longitude;
 	//weather
     std::string weather;
 	//visited -> this is probably getting removed (mário)
@@ -21,8 +23,10 @@ class Airport {
 	bool removeConnectionTo(Airport *d);
     bool removeConnections();
 public:
-	Airport(std::string l, std::string w);
+	Airport(const int& id, const double& latitude, const double& longitude);
+    Airport(const int& id, const double& latitude, const double& longitude, std::string  name);
 	friend class Graph;
+    virtual ~Airport();
 };
 
 #endif  /*  _CAL_AIRPORT_H_ */

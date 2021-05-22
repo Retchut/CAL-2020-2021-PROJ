@@ -2,10 +2,10 @@
 
 This dataset is a directed graph with 3425 airports (nodes) and 37595 routes (edges).
 
-- [airports_full_nodes_latlng.txt](airports_full_nodes_latlng.txt): List of all nodes and their coordinates (latitude and longitude)
-- [airports_full_nodes_names.txt](airports_full_nodes_names.txt): List of all nodes and their IATA codes (may be useful to visualize)
+- [airports_full_nodes_latlng.txt](airports_full_node_coords.txt): List of all nodes and their coordinates (latitude and longitude)
+- [airports_full_nodes_names.txt](airports_full_node_names.txt): List of all nodes and their IATA codes (may be useful to visualize)
 - [airports_full_edges.txt](airports_full_edges.txt): List of all edges
-- [airports_full_edges_weights.txt](airports_full_edges_weights.txt) List of all edges, and their weights
+- [airports_full_edges_weights.txt](airports_full_edge_weights.txt) List of all edges, and their weights
 
 ## Sources
 
