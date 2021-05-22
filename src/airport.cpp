@@ -22,12 +22,12 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
  * Auxiliary function to add an outgoing edge to a vertex (this),
  * with a given destination vertex (d) and edge weight (w).
  */
-void Airport::addConnection(Airport *d, double dist) {
+void Airport::addConnection(const int& id, Airport *d, double dist) {
     for (auto c : this->connections) {
         if (c.dest == d)
             return;     //already exists
     }
-    this->connections.emplace_back(Connection(this, d, dist));
+    this->connections.emplace_back(Connection(id, this, d, dist));
 }
 
 /*

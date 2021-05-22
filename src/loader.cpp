@@ -79,6 +79,7 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
     }
 
 
+    // Load connections
     std::cout << "Reading data from: " << directory + prefix + "edges" + suffix << std::endl;
     std::cout << "Reading data from: " << directory + prefix + "edge_weights" + suffix << std::endl;
     fileA.open(directory + prefix + "edges" + suffix, std::ios::in);
@@ -117,7 +118,7 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
         rowB.erase(0, rowB.find_first_of(',') + 1);
 
         if (sourceAirportEdges == sourceAirportWeights && destinationAirportEdges == destinationAirportWeights) {
-            graph.addConnection(sourceAirportEdges, destinationAirportEdges, std::stod(rowB));
+            graph.addConnection(rowNr, sourceAirportEdges, destinationAirportEdges, std::stod(rowB));
         } else {
             return 1;
         }

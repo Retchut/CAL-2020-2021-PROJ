@@ -4,11 +4,12 @@
 class Airport;
 
 class Connection {
-	Airport * orig;	//origin airport
+	int id;
+    Airport * orig;	//origin airport
 	Airport * dest;     //destination airport
 	double distance;      //distance
 public:
-	Connection(Airport *o, Airport *d, double dist);
+	Connection(const int& id, Airport *o, Airport *d, double dist);
 	Airport * getOrigin();
 	Airport * getDestination();
 	double getDistance();
