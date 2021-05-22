@@ -17,6 +17,7 @@ file(GLOB EXAMPLE_FILES CONFIGURE_DEPENDS
 
 file(GLOB PROJ_FILES CONFIGURE_DEPENDS
         "src/*.cpp"
+        "src/*.h"
         )
 
 add_executable(Example
@@ -27,7 +28,7 @@ add_executable(Example
 add_executable(Proj
         src/main.cpp
         ${PROJ_FILES}
-        )
+        src/loader.cpp)
 
 target_link_libraries(Example graphviewer)
 target_link_libraries(Proj graphviewer)
