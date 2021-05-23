@@ -48,6 +48,7 @@ class Plane {
         //----other funcs----
         void replenishFuel();
         void replaceCrew();
+        void visitAirport();
         //functions to add and remove passengers
         //-------------------
 };

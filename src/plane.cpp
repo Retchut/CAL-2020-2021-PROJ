@@ -49,9 +49,14 @@ Crew * Plane::getCrew() const {    return this->crew;  }
 void Plane::replenishFuel(){
     this->currFuel = this->maxFuel;
 }
+
 void Plane::replaceCrew(){
     Crew *oldCrew = this->crew;
     this->crew = this->curr->getReplacementCrew();
     this->curr->setReplacementCrew(oldCrew);
+}
+
+void Plane::visitAirport() {
+    this->visited.push_back(this->curr);
 }
 //-------------------
