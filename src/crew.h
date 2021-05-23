@@ -14,14 +14,29 @@ class Crew {
     Plane *working;
 
     public:
+        //----Constructor----
         Crew(double hours, Airport *resting);
         Crew(double hours, Plane *working);
+        //-------------------
+
+        //----Destructor-----
+        virtual ~Crew();
+        //-------------------
+
+        //------getters------
         double getHours();
+        Airport *getRestingAirport();
+        Plane *getWorkingAirport();
+        //-------------------
+
+        //------setters------
+        //-------------------
+
+        //----other funcs----
         bool isWorking();
         void startWorking(Plane *working);
         void stopWorking(Airport *resting);
-        Airport *getRestingAirport();
-        Plane *getWorkingAirport();
+        //-------------------
 };
 
 

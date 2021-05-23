@@ -5,11 +5,25 @@
 #include "passenger.h"
 #include "airport.h"
 
-Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) {
-    this->src = src;
-    this->dest = dest;
+//----Constructor----
+Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : src(src), dest(dest), plane(plane){}
+//-------------------
+
+
+//----Destructor-----
+Passenger::~Passenger(){}
+//-------------------
+
+
+//------getters------
+Plane * Passenger::getPlane() const {  return this->plane; }
+Airport * Passenger::getSource() const {   return this->src;   }
+Airport * Passenger::getDestination() const {  return this->dest;  }
+//-------------------
+
+
+//------setters------
+void Passenger::setPlane(Plane *plane){
     this->plane = plane;
 }
-Plane *Passenger::getPlane(){
-    return this->plane;
-}
+//-------------------

@@ -6,22 +6,38 @@
 #include "airport.h"
 #include "plane.h"
 
-Crew::Crew(double hours, Airport *resting){
-    this->hours = hours;
-    this->resting = resting;
-    this->working = NULL;
-}
+//----Constructor----
+Crew::Crew(double hours, Airport *resting) : hours(hours), resting(resting), working(NULL) {}
 
-Crew::Crew(double hours, Plane *working){
-    this->hours = hours;
-    this->working = working;
-    this->resting = NULL;
-}
+Crew::Crew(double hours, Plane *working) : hours(hours), working(working), resting(NULL) {}
+//-------------------
 
+
+//----Destructor-----
+Crew::~Crew(){}
+//-------------------
+
+
+//------getters------
 double Crew::getHours(){
     return this->hours;
 }
 
+Airport * Crew::getRestingAirport(){
+    return this->resting;
+}
+
+Plane * Crew::getWorkingAirport(){
+    return this->working;
+}
+//-------------------
+
+
+//------setters------
+//-------------------
+
+
+//----other funcs----
 bool Crew::isWorking(){
     return (working != NULL);
 }
@@ -34,11 +50,4 @@ void Crew::stopWorking(Airport *resting){
     this->working = NULL;
     this->resting = resting;
 }
-
-Airport *Crew::getRestingAirport(){
-    return this->resting;
-}
-
-Plane *Crew::getWorkingAirport(){
-    return this->working;
-}
+//-------------------

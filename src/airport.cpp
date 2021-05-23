@@ -4,9 +4,10 @@
 
 #include "connection.h"
 
+//----Constructor----
 Airport::Airport(const int &id, const double &latitude, const double &longitude) : id(id), latitude(latitude),
                                                                                    longitude(longitude), visited(false),
-                                                                                   processing(false), indegree(0) {}
+                                                                                   processing(false), indegree(0), replCrew(NULL) {}
 
 Airport::Airport(const int &id, const double &latitude, const double &longitude, std::string name) : id(id),
                                                                                                      name(std::move(
@@ -16,7 +17,16 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
                                                                                                              longitude),
                                                                                                      visited(false),
                                                                                                      processing(false),
-                                                                                                     indegree(0) {}
+                                                                                                     indegree(0), replCrew(NULL) {}
+//-------------------
+
+
+//----Destructor-----
+Airport::~Airport() {
+    connections.clear();
+}
+//-------------------
+
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
@@ -55,6 +65,17 @@ bool Airport::removeConnections() {
     return this->connections.empty();
 }
 
-Airport::~Airport() {
-    connections.clear();
+
+//------getters------
+Crew *Airport::getReplacementCrew(){    return this->replCrew;  }
+//-------------------
+
+//------setters------
+void Airport::setReplacementCrew(Crew *newRepl){
+    this->replCrew = newRepl;
 }
+//-------------------
+
+//----other funcs----
+//-------------------
+

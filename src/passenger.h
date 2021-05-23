@@ -15,8 +15,23 @@ class Passenger {
     //identifying data?
 
     public:
+        //----Constructor----
         Passenger(Airport *src, Airport *dest, Plane *plane);
-        Plane *getPlane();
+        //-------------------
+
+        //----Destructor-----
+        virtual ~Passenger();
+        //-------------------
+
+        //------getters------
+        Airport *getSource() const ;
+        Airport *getDestination() const ;
+        Plane *getPlane() const ;
+        //-------------------
+
+        //------setters------
+        void setPlane(Plane *plane);
+        //-------------------
 };
 
 
