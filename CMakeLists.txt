@@ -28,7 +28,7 @@ add_executable(Example
 add_executable(Proj
         src/main.cpp
         ${PROJ_FILES}
-        src/loader.cpp)
+        src/loader.cpp src/plane.cpp src/plane.h src/passenger.cpp src/passenger.h src/crew.cpp src/crew.h)
 
 target_link_libraries(Example graphviewer)
 target_link_libraries(Proj graphviewer)
