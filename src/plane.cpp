@@ -79,8 +79,7 @@ bool Plane::canMoveThrough(const Connection &c) const {
     //TODO: crew work hours
     if (this->getCrew()->getHours() * this->speed < c.getDistance())
         return false;
-    if (c.getDestination()->getId() != this->getSourceAirport()->getId() &&
-        std::find(this->visited.begin(), this->visited.end(), c.getDestination()) != this->visited.end())
+    if (false)
         return false;
     return calculateConsumption(c) <= this->maxFuel;
 }
