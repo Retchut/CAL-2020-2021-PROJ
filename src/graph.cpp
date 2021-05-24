@@ -128,3 +128,9 @@ void Graph::viewGraph(const std::string &imgPath) const {
 
     gv.join();
 }
+
+void Graph::generatePassengers(const int& maxNr) {
+    for(auto airport : airportSet){
+        airport->generatePassengers(maxNr, airportSet);
+    }
+}

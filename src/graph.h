@@ -30,7 +30,7 @@ public:
 
     bool removeConnection(const int &ida, const int &idb);
 
-
+    void generatePassengers(const int& maxNr);
 
     void updatePassengers();
 

@@ -16,16 +16,15 @@ class Plane {
     double speed;
     double currFuel;
     double maxFuel;
-    std::vector<Passenger *> currPas;
+    std::vector<Passenger> currPas;
     unsigned int maxPas;
     Crew *crew;
     std::vector<Airport *> visited;
-    std::set<Passenger> passengers;
+
 
 public:
     //----Constructor----
-    Plane(Airport *src, double speed, double currFuel, double maxFuel, std::vector<Passenger *> currPas,
-          unsigned int maxPas, Crew *crew);
+    Plane(Airport *src, double speed, double currFuel, double maxFuel, unsigned int maxPas, Crew *crew);
     //-------------------
 
     //----Destructor-----
@@ -45,7 +44,7 @@ public:
 
     // get passengers
 
-    std::vector<Passenger *> getCurrentPassengers() const;
+    std::vector<Passenger> getCurrentPassengers() const;
 
     unsigned int getMaxPassengers() const;
 
@@ -53,8 +52,8 @@ public:
     //-------------------
 
     //------setters------
-    //add passengers
-    //remove passengers
+    // add passengers
+    // remove passengers
     //-------------------
 
     //----other funcs----
