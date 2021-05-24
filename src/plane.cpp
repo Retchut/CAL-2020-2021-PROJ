@@ -103,16 +103,15 @@ bool Plane::canMoveThrough(const Connection &c) const {
 
 Connection *Plane::calculateBestConnection() {
     if(this->visited.size() == this->airportNumber){
-        std::vector<Connection> temp = this->curr->getConnections();
-        for(auto c = temp.begin(); c < temp.end(); c++){
-            if(c->getDestination() == this->src)
-                return &*c;
+        for(auto& c : *(this->curr->getConnections())){
+            if(c.getDestination() == this->src)
+                return &c;
         }
     }
 
     std::vector<std::pair<Connection *, double>> vals = {};
 
-    for (auto& c : this->curr->getConnections()) {
+    for (auto& c : *this->curr->getConnections()) {
         double val = 0.0;
         if (canMoveThrough(c)) {
             if (!this->currPas.empty()) {

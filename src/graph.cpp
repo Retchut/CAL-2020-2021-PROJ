@@ -155,7 +155,7 @@ void Graph::viewGraph(const std::string &imgPath) const {
                                     GraphViewer::DARK_GRAY};
     for (auto plane : planeSet) {
         for (size_t i = 0; i < plane.getRoute().size(); i++) {
-
+            unsigned int currID = plane.getRoute()[i]->getId();
             Edge &edge =
                     gv.addEdge(plane.getRoute()[i]->getId(), gv.getNode(plane.getRoute()[i]->orig->getId()), gv.getNode(plane.getRoute()[i]->dest->id),
                                GraphViewer::Edge::EdgeType::DIRECTED);

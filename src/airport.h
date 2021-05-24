@@ -48,7 +48,7 @@ public:
     //-------------------
 
     //------getters------
-    std::vector<Connection> getConnections();
+    std::vector<Connection> *getConnections();
     Crew* getReplacementCrew();
     std::vector<Passenger> getPassengers() const;
     int getId();
