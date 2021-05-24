@@ -1,7 +1,3 @@
-//
-// Created by Mario on 23/05/2021.
-//
-
 #include "plane.h"
 #include "airport.h"
 #include "passenger.h"
@@ -9,8 +5,10 @@
 
 //----Constructor----
 Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel,
-                std::vector<Passenger *> currPas, unsigned int maxPas, Crew *crew) : src(src), speed(speed), currFuel(currFuel),
-                                                                                        maxFuel(maxFuel), currPas(currPas), maxPas(maxPas), crew(crew) {
+             std::vector<Passenger *> currPas, unsigned int maxPas, Crew *crew) : src(src), speed(speed),
+                                                                                  currFuel(currFuel),
+                                                                                  maxFuel(maxFuel), currPas(currPas),
+                                                                                  maxPas(maxPas), crew(crew) {
     this->curr = src;
     this->visited = {};
 }
@@ -18,26 +16,26 @@ Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel,
 
 
 //----Destructor-----
-Plane::~Plane(){}
+Plane::~Plane() {}
 //-------------------
 
 
 //------getters------
-Airport * Plane::getSourceAirport() const {    return this->src;   }
+Airport *Plane::getSourceAirport() const { return this->src; }
 
-Airport * Plane::getCurrentAirport() const {   return this->curr;  }
+Airport *Plane::getCurrentAirport() const { return this->curr; }
 
-double Plane::getSpeed() const {   return this->speed; }
+double Plane::getSpeed() const { return this->speed; }
 
-double Plane::getCurrentFuel() const { return this->currFuel;  }
+double Plane::getCurrentFuel() const { return this->currFuel; }
 
-double Plane::getMaxFuel() const { return this->maxFuel;   }
+double Plane::getMaxFuel() const { return this->maxFuel; }
 
-std::vector<Passenger *> Plane::getCurrentPassengers() const { return this->currPas;   }
+std::vector<Passenger *> Plane::getCurrentPassengers() const { return this->currPas; }
 
-unsigned int Plane::getMaxPassengers() const { return this->maxPas;    }
+unsigned int Plane::getMaxPassengers() const { return this->maxPas; }
 
-Crew * Plane::getCrew() const {    return this->crew;  }
+Crew *Plane::getCrew() const { return this->crew; }
 //-------------------
 
 
@@ -46,11 +44,11 @@ Crew * Plane::getCrew() const {    return this->crew;  }
 
 
 //----other funcs----
-void Plane::replenishFuel(){
+void Plane::replenishFuel() {
     this->currFuel = this->maxFuel;
 }
 
-void Plane::replaceCrew(){
+void Plane::replaceCrew() {
     Crew *oldCrew = this->crew;
     this->crew = this->curr->getReplacementCrew();
     this->curr->setReplacementCrew(oldCrew);

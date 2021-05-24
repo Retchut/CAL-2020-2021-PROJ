@@ -7,27 +7,27 @@
 #include "plane.h"
 
 //----Constructor----
-Crew::Crew(double hours, Airport *resting) : hours(hours), resting(resting), working(NULL) {}
+Crew::Crew(double hours, Airport *resting) : hours(hours), resting(resting), working(nullptr) {}
 
-Crew::Crew(double hours, Plane *working) : hours(hours), working(working), resting(NULL) {}
+Crew::Crew(double hours, Plane *working) : hours(hours), working(working), resting(nullptr) {}
 //-------------------
 
 
 //----Destructor-----
-Crew::~Crew(){}
+Crew::~Crew() = default;
 //-------------------
 
 
 //------getters------
-double Crew::getHours(){
+double Crew::getHours() const {
     return this->hours;
 }
 
-Airport * Crew::getRestingAirport(){
+Airport *Crew::getRestingAirport() {
     return this->resting;
 }
 
-Plane * Crew::getWorkingAirport(){
+Plane *Crew::getWorkingAirport() {
     return this->working;
 }
 //-------------------
@@ -38,16 +38,17 @@ Plane * Crew::getWorkingAirport(){
 
 
 //----other funcs----
-bool Crew::isWorking(){
-    return (working != NULL);
+bool Crew::isWorking() {
+    return (working != nullptr);
 }
 
-void Crew::startWorking(Plane *working){
-    this->resting = NULL;
-    this->working = working;
+void Crew::startWorking(Plane *nworking) {
+    this->resting = nullptr;
+    this->working = nworking;
 }
-void Crew::stopWorking(Airport *resting){
-    this->working = NULL;
-    this->resting = resting;
+
+void Crew::stopWorking(Airport *nresting) {
+    this->working = nullptr;
+    this->resting = nresting;
 }
 //-------------------

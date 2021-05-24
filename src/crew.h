@@ -6,6 +6,7 @@
 #define PROJ_CREW_H
 
 class Airport;
+
 class Plane;
 
 class Crew {
@@ -13,30 +14,35 @@ class Crew {
     Airport *resting;
     Plane *working;
 
-    public:
-        //----Constructor----
-        Crew(double hours, Airport *resting);
-        Crew(double hours, Plane *working);
-        //-------------------
+public:
+    //----Constructor----
+    Crew(double hours, Airport *resting);
 
-        //----Destructor-----
-        virtual ~Crew();
-        //-------------------
+    Crew(double hours, Plane *working);
+    //-------------------
 
-        //------getters------
-        double getHours();
-        Airport *getRestingAirport();
-        Plane *getWorkingAirport();
-        //-------------------
+    //----Destructor-----
+    virtual ~Crew();
+    //-------------------
 
-        //------setters------
-        //-------------------
+    //------getters------
+    double getHours() const;
 
-        //----other funcs----
-        bool isWorking();
-        void startWorking(Plane *working);
-        void stopWorking(Airport *resting);
-        //-------------------
+    Airport *getRestingAirport();
+
+    Plane *getWorkingAirport();
+    //-------------------
+
+    //------setters------
+    //-------------------
+
+    //----other funcs----
+    bool isWorking();
+
+    void startWorking(Plane *working);
+
+    void stopWorking(Airport *resting);
+    //-------------------
 };
 
 

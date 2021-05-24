@@ -5,48 +5,52 @@
 #include <string>
 
 class Connection;
+
 class Crew;
 
 class Airport {
-	int id;
+    int id;
     //location
     std::string name;
     double latitude, longitude;
-	//weather
+    //weather
     std::string weather;
-	//visited -> this is probably getting removed (mário)
-	std::vector<Connection> connections;  // list of outgoing edges
-	bool visited;          // auxiliary field used by dfs and bfs
-	bool processing;       // auxiliary field used by isDAG
-	int indegree;          // auxiliary field used by topsort
-	Crew *replCrew;
+    //visited -> this is probably getting removed (mário)
+    std::vector<Connection> connections;  // list of outgoing edges
+    bool visited;          // auxiliary field used by dfs and bfs
+    bool processing;       // auxiliary field used by isDAG
+    int indegree;          // auxiliary field used by topsort
+    Crew *replCrew;
 
-	void addConnection(const int& conId, Airport *d, double dist);
+    void addConnection(const int &conId, Airport *d, double dist);
+
     bool removeConnectionTo(Airport *d);
+
     bool removeConnections();
 
-    public:
-        //----Constructor----
-        Airport(const int& id, const double& latitude, const double& longitude);
-        Airport(const int& id, const double& latitude, const double& longitude, std::string  name);
-        //-------------------
+public:
+    //----Constructor----
+    Airport(const int &id, const double &latitude, const double &longitude);
 
-        friend class Graph;
+    Airport(const int &id, const double &latitude, const double &longitude, std::string name);
+    //-------------------
 
-        //----Destructor-----
-        virtual ~Airport();
-        //-------------------
+    friend class Graph;
 
-        //------getters------
-        Crew *getReplacementCrew();
-        //-------------------
+    //----Destructor-----
+    virtual ~Airport();
+    //-------------------
 
-        //------setters------
-        void setReplacementCrew(Crew *newRepl);
-        //-------------------
+    //------getters------
+    Crew *getReplacementCrew();
+    //-------------------
 
-        //----other funcs----
-        //-------------------
+    //------setters------
+    void setReplacementCrew(Crew *newRepl);
+    //-------------------
+
+    //----other funcs----
+    //-------------------
 };
 
 #endif  /*  _CAL_AIRPORT_H_ */

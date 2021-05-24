@@ -6,6 +6,7 @@
 #include <set>
 
 class Airport;
+
 class Connection;
 
 class Graph {
@@ -14,13 +15,20 @@ private:
     std::set<int> connectionIds;
 public:
     int getAirportNum() const;
-    Airport *findAirport(const int& id) const;
-	bool addAirport(const int& id, const double& latitude, const double& longitude);
-    bool addAirport(const int& id, const double& latitude, const double& longitude, const std::string& name);
-	bool addConnection(const int& id, const int& source, const int& destination, double dist);
-	bool removeConnection(const int& ida, const int& idb);
-	bool removeAirport(const int& id);
-    void viewGraph(const std::string& imgPath) const;
+
+    Airport *findAirport(const int &id) const;
+
+    bool addAirport(const int &id, const double &latitude, const double &longitude);
+
+    bool addAirport(const int &id, const double &latitude, const double &longitude, const std::string &name);
+
+    bool addConnection(const int &id, const int &source, const int &destination, double dist);
+
+    bool removeConnection(const int &ida, const int &idb);
+
+    bool removeAirport(const int &id);
+
+    void viewGraph(const std::string &imgPath) const;
 
     virtual ~Graph();
 };

@@ -7,7 +7,8 @@
 //----Constructor----
 Airport::Airport(const int &id, const double &latitude, const double &longitude) : id(id), latitude(latitude),
                                                                                    longitude(longitude), visited(false),
-                                                                                   processing(false), indegree(0), replCrew(NULL) {}
+                                                                                   processing(false), indegree(0),
+                                                                                   replCrew(nullptr) {}
 
 Airport::Airport(const int &id, const double &latitude, const double &longitude, std::string name) : id(id),
                                                                                                      name(std::move(
@@ -17,7 +18,8 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
                                                                                                              longitude),
                                                                                                      visited(false),
                                                                                                      processing(false),
-                                                                                                     indegree(0), replCrew(NULL) {}
+                                                                                                     indegree(0),
+                                                                                                     replCrew(nullptr) {}
 //-------------------
 
 
@@ -32,7 +34,7 @@ Airport::~Airport() {
  * Auxiliary function to add an outgoing edge to a vertex (this),
  * with a given destination vertex (d) and edge weight (w).
  */
-void Airport::addConnection(const int& id, Airport *d, double dist) {
+void Airport::addConnection(const int &conId, Airport *d, double dist) {
     for (auto c : this->connections) {
         if (c.dest == d)
             return;     //already exists
@@ -66,11 +68,11 @@ bool Airport::removeConnections() {
 
 
 //------getters------
-Crew *Airport::getReplacementCrew(){    return this->replCrew;  }
+Crew *Airport::getReplacementCrew() { return this->replCrew; }
 //-------------------
 
 //------setters------
-void Airport::setReplacementCrew(Crew *newRepl){
+void Airport::setReplacementCrew(Crew *newRepl) {
     this->replCrew = newRepl;
 }
 //-------------------
