@@ -5,6 +5,7 @@
 #include "crew.h"
 #include "plane.h"
 #include "graphviewer.h"
+#include "MutablePriorityQueue.h"
 
 using Node = GraphViewer::Node;
 using Edge = GraphViewer::Edge;
@@ -152,7 +153,8 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     unsigned int maxPass = 350 + (rand() % 350);
     unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
     //Plane newPlane = Plane(id, findAirport(airportId), speed, consumption/speed, maxFuel, maxPass, nullptr);
-    Plane newPlane = Plane(id, findAirport(1), speed, consumption / speed, maxFuel, maxPass, nullptr);
+    Plane newPlane = Plane(id, findAirport(1), speed, consumption / speed, maxFuel, maxPass, nullptr,
+                           this->airportSet.size());
     Crew *crew = new Crew(id, &newPlane);
     newPlane.setCrew(crew);
     newPlane.visitAirport(newPlane.getCurrentAirport());
@@ -187,4 +189,9 @@ void Graph::calculateSteps() {
             p.printRoute();
         }
     }
+}
+
+void Graph::cycleUsingDjiskstra(Plane *plane, Airport* origin) {
+    //MutablePriorityQueue<Connection *> connections;
+
 }

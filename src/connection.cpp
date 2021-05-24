@@ -4,6 +4,6 @@ Connection::Connection(const int &id, Airport *o, Airport *d, double dist) : id(
 
 Airport *Connection::getOrigin() const { return this->orig; }
 
-Airport *Connection::getDestination() const { return this->dest; }
+ Airport *Connection::getDestination() const { return this->dest; }
 
 double Connection::getDistance() const { return this->distance; }

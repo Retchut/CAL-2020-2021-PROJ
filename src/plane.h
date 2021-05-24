@@ -22,10 +22,12 @@ class Plane {
     unsigned int maxPas;
     Crew* crew;
     std::vector<Airport *> visited;
+    std::vector<Connection *> route;
+    size_t airportNumber;
 
 public:
     //----Constructor----
-    Plane(unsigned int id, Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas, Crew *crew);
+    Plane(unsigned int id, Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas, Crew *crew, size_t airportNum);
     //-------------------
 
     //----Destructor-----
@@ -42,7 +44,6 @@ public:
     double getFuelConsumption() const;
 
     double getMaxFuel() const;
-
 
     std::vector<Passenger> getCurrentPassengers() const;
 
@@ -65,6 +66,8 @@ public:
     bool canMoveThrough(const Connection &c) const;
 
     void replaceCrew();
+
+    void traverseEdge(Connection *toTraverse);
 
     void visitAirport(Airport *next);
 

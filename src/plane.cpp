@@ -5,11 +5,12 @@
 #include "passenger.h"
 #include "crew.h"
 
+
 #include <iostream>
 
 //----Constructor----
 Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas,
-             Crew *crew) :
+             Crew *crew, size_t airportNum) :
          id(id),
         src(src),
         speed(speed),
@@ -17,9 +18,11 @@ Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, do
                 fuelConsump),
         maxFuel(maxFuel),
         maxPas(maxPas),
-        crew(crew) {
+        crew(crew),
+        airportNumber(airportNum){
     this->curr = src;
     this->visited = {};
+    this->route = {};
 }
 //-------------------
 
@@ -62,6 +65,10 @@ void Plane::replaceCrew() {
     this->curr->setReplacementCrew(oldCrew);
 }
 
+void Plane::traverseEdge(Connection *toTraverse){
+    this->route.push_back(toTraverse);
+}
+
 void Plane::visitAirport(Airport *next) {
     this->curr = next;
     this->visited.push_back(next);
@@ -90,6 +97,16 @@ bool Plane::canMoveThrough(const Connection &c) const {
 }
 
 Connection *Plane::calculateBestConnection() {
+    if(this->visited.size() == this->airportNumber){
+        //return to origin
+        int t22 = this->src->getId();
+        for(Connection c : this->curr->getConnections()){
+            int t11 = c.getDestination()->getId();
+            if(c.getDestination() == this->src)
+                return &c;
+        }
+    }
+
     std::vector<std::pair<Connection *, double>> vals = {};
 
     for (auto& c : this->curr->getConnections()) {
@@ -112,12 +129,12 @@ Connection *Plane::calculateBestConnection() {
     std::sort(vals.begin(), vals.end(), [](std::pair<Connection *, double> a, std::pair<Connection *, double> b) {
         return a.second > b.second;
     });
-
     return vals[0].first;
 }
 
 void Plane::nextStep() {
     Connection *c = calculateBestConnection();
+    traverseEdge(c);
     visitAirport(c->getDestination());
     curr->updatePassengers(this);
 }
