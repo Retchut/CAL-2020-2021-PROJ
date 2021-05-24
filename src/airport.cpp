@@ -70,6 +70,8 @@ bool Airport::removeConnections() {
 
 //------getters------
 Crew *Airport::getReplacementCrew() { return this->replCrew; }
+
+int Airport::getId() {return this->id;}
 //-------------------
 
 //------setters------
@@ -79,7 +81,12 @@ void Airport::setReplacementCrew(Crew *newRepl) {
 
 void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& airports) {
     for(int i = 0; i < rand() % nr; i++){
-        Passenger a = Passenger(this, airports.at(rand()%airports.size()), nullptr);
+        Airport* dest = airports.at(rand()%airports.size());
+        if(dest == this){
+            i--;
+            continue;
+        }
+        Passenger a = Passenger(this, dest, nullptr);
         passengers.emplace_back(a);
     }
 }
@@ -89,9 +96,17 @@ void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& ai
 //-------------------
 
 void Airport::embark(Plane *plane, Passenger passenger) {
-    plane->addPassenger(passenger);
+    if(plane->addPassenger(passenger)){
+        for(auto it = this->passengers.begin(); it != this->passengers.end();it++){
+            if(*it == passenger){
+                this->passengers.erase(it);
+                return;
+            }
+        }
+    }
 }
 
 void Airport::disembark(Plane *plane, Passenger passenger) {
-    plane->removePassenger(passenger);
+    if(plane->removePassenger(passenger) && passenger.getDestination()->getId() != this->id)
+        this->passengers.push_back(passenger);
 }
