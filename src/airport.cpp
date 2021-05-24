@@ -79,7 +79,12 @@ void Airport::setReplacementCrew(Crew *newRepl) {
 
 void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& airports) {
     for(int i = 0; i < rand() % nr; i++){
-        Passenger a = Passenger(this, airports.at(rand()%airports.size()), nullptr);
+        Airport* dest = airports.at(rand()%airports.size());
+        if(dest == this){
+            i--;
+            continue;
+        }
+        Passenger a = Passenger(this, dest, nullptr);
         passengers.emplace_back(a);
     }
 }
