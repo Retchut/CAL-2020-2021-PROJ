@@ -60,8 +60,8 @@ public:
     //----other funcs----
     //-------------------
 
-    void embark(Plane * plane, Passenger* passenger);
-    void disembark(Plane * plane, Passenger* passenger);
+    void embark(Plane * plane, Passenger passenger);
+    void disembark(Plane * plane, Passenger passenger);
 };
 
 #endif  /*  _CAL_AIRPORT_H_ */

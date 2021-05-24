@@ -80,10 +80,10 @@ void Airport::setReplacementCrew(Crew *newRepl) {
 //----other funcs----
 //-------------------
 
-void Airport::embark(Plane *plane, Passenger *passenger) {
+void Airport::embark(Plane *plane, Passenger passenger) {
     plane->addPassenger(passenger);
 }
 
-void Airport::disembark(Plane *plane, Passenger *passenger) {
+void Airport::disembark(Plane *plane, Passenger passenger) {
     plane->removePassenger(passenger);
 }
