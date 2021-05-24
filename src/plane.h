@@ -43,6 +43,8 @@ public:
 
     double getMaxFuel() const;
 
+    // get passengers
+
     std::vector<Passenger *> getCurrentPassengers() const;
 
     unsigned int getMaxPassengers() const;
@@ -51,7 +53,8 @@ public:
     //-------------------
 
     //------setters------
-    void generatePassengers(const int& nr);
+    //add passengers
+    //remove passengers
     //-------------------
 
     //----other funcs----

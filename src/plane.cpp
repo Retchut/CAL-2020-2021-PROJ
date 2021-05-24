@@ -1,4 +1,6 @@
 #include "plane.h"
+
+#include <utility>
 #include "airport.h"
 #include "passenger.h"
 #include "crew.h"
@@ -7,7 +9,7 @@
 Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel,
              std::vector<Passenger *> currPas, unsigned int maxPas, Crew *crew) : src(src), speed(speed),
                                                                                   currFuel(currFuel),
-                                                                                  maxFuel(maxFuel), currPas(currPas),
+                                                                                  maxFuel(maxFuel), currPas(std::move(currPas)),
                                                                                   maxPas(maxPas), crew(crew) {
     this->curr = src;
     this->visited = {};
@@ -16,7 +18,7 @@ Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel,
 
 
 //----Destructor-----
-Plane::~Plane() {}
+Plane::~Plane() = default;
 //-------------------
 
 
