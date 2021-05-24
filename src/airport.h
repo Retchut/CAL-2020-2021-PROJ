@@ -6,6 +6,7 @@
 #include <set>
 
 #include "passenger.h"
+#include "plane.h"
 
 class Connection;
 class Passenger;
@@ -58,6 +59,9 @@ public:
 
     //----other funcs----
     //-------------------
+
+    void embark(Plane * plane, Passenger* passenger);
+    void disembark(Plane * plane, Passenger* passenger);
 };
 
 #endif  /*  _CAL_AIRPORT_H_ */

@@ -21,7 +21,6 @@ class Plane {
     Crew *crew;
     std::vector<Airport *> visited;
 
-
 public:
     //----Constructor----
     Plane(Airport *src, double speed, double currFuel, double maxFuel, unsigned int maxPas, Crew *crew);
@@ -42,9 +41,10 @@ public:
 
     double getMaxFuel() const;
 
-    // get passengers
 
     std::vector<Passenger> getCurrentPassengers() const;
+
+    // get passengers
 
     unsigned int getMaxPassengers() const;
 
@@ -62,6 +62,10 @@ public:
     void replaceCrew();
 
     void visitAirport();
+
+    void addPassenger(Passenger * passenger);
+
+    void removePassenger(Passenger * passenger);
     //functions to add and remove passengers
     //-------------------
 };

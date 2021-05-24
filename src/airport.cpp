@@ -88,3 +88,10 @@ void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& ai
 //----other funcs----
 //-------------------
 
+void Airport::embark(Plane *plane, Passenger *passenger) {
+    plane->addPassenger(passenger);
+}
+
+void Airport::disembark(Plane *plane, Passenger *passenger) {
+    plane->removePassenger(passenger);
+}
