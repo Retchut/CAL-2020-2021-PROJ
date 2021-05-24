@@ -79,15 +79,20 @@ bool Plane::canMoveThrough(const Connection &c) const {
     //TODO: crew work hours
     if (this->getCrew()->getHours() * this->speed < c.getDistance())
         return false;
-    if (false)
-        return false;
+
+    for(Airport* visit : visited){
+        if (visit->getId() == c.getDestination()->getId())
+            return false;
+    }
+
+
     return calculateConsumption(c) <= this->maxFuel;
 }
 
 Connection *Plane::calculateBestConnection() {
     std::vector<std::pair<Connection *, double>> vals = {};
 
-    for (auto c : this->curr->getConnections()) {
+    for (auto& c : this->curr->getConnections()) {
         double val = 0.0;
         if (canMoveThrough(c)) {
             if (!this->currPas.empty()) {
