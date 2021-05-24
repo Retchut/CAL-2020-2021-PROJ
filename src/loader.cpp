@@ -118,7 +118,8 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
         rowB.erase(0, rowB.find_first_of(',') + 1);
 
         if (sourceAirportEdges == sourceAirportWeights && destinationAirportEdges == destinationAirportWeights) {
-            graph.addConnection(rowNr, sourceAirportEdges, destinationAirportEdges, std::stod(rowB));
+            if(!graph.addConnection(rowNr, sourceAirportEdges, destinationAirportEdges, std::stod(rowB))){
+                return 1;}
         } else {
             return 1;
         }

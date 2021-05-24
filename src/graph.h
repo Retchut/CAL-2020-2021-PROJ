@@ -18,15 +18,15 @@ public:
 
     Airport *findAirport(const int &id) const;
 
-    bool addAirport(const int &id, const double &latitude, const double &longitude);
+    bool addAirport(const int &aid, const double &latitude, const double &longitude);
 
-    bool addAirport(const int &id, const double &latitude, const double &longitude, const std::string &name);
+    bool addAirport(const int &aid, const double &latitude, const double &longitude, const std::string &name);
 
-    bool addConnection(const int &id, const int &source, const int &destination, double dist);
+    bool addConnection(const int &conid, const int &source, const int &destination, double dist);
 
     bool removeConnection(const int &ida, const int &idb);
 
-    bool removeAirport(const int &id);
+    bool removeAirport(const int &aid);
 
     void viewGraph(const std::string &imgPath) const;
 
