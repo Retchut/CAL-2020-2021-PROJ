@@ -8,7 +8,8 @@ int loader(Graph& graph, const std::string &directory, const std::string &prefix
 
 int main() {
     Graph g;
-    loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+    //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+    loader(g,"../airports_datasets/airports_iberia/",  "", ".txt");
     g.viewGraph("");
     std::cout << "Finish" << std::endl;
 }

@@ -107,7 +107,7 @@ void Graph::viewGraph(const std::string &imgPath) const {
         Node &node0 = gv.addNode(airport->id, sf::Vector2f(airport->longitude * 10, -airport->latitude * 10));
         node0.setColor(GraphViewer::BLUE);
     }
-/*
+
     for (auto airport : airportSet) {
         for (auto connection : airport->connections) {
             Edge &edge =
@@ -117,6 +117,6 @@ void Graph::viewGraph(const std::string &imgPath) const {
         }
 
     }
-*/
+
     gv.join();
 }
