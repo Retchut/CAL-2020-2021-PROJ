@@ -149,18 +149,29 @@ void Graph::viewGraph(const std::string &imgPath) const {
         static const Color LIGHT_GRAY;
         static const Color DARK_GRAY ;
      */
+
+    /*
+    //This breaks if we display more than one equal edge
     GraphViewer::Color colors[13] = {GraphViewer::BLACK, GraphViewer::WHITE, GraphViewer::RED, GraphViewer::GREEN,
                                     GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
                                     GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
                                     GraphViewer::DARK_GRAY};
-    for (auto plane : planeSet) {
-        for (size_t i = 0; i < plane.getRoute().size(); i++) {
-            unsigned int currID = plane.getRoute()[i]->getId();
+    for (size_t i = 0; i < planeSet.size(); i++) {
+        auto color = colors[i%13];
+        for (auto connection : planeSet[i].getRoute()) {
             Edge &edge =
-                    gv.addEdge(plane.getRoute()[i]->getId(), gv.getNode(plane.getRoute()[i]->orig->getId()), gv.getNode(plane.getRoute()[i]->dest->id),
+                    gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
                                GraphViewer::Edge::EdgeType::DIRECTED);
-            edge.setColor(colors[i%13]);
+            edge.setColor(color);
         }
+    }
+    */
+
+    for (auto connection : planeSet[0].getRoute()) {
+        Edge &edge =
+                gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
+                           GraphViewer::Edge::EdgeType::DIRECTED);
+        edge.setColor(GraphViewer::BLACK);
     }
 
     gv.join();
@@ -193,7 +204,6 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     newPlane.setCrew(crew);
     newPlane.visitAirport(newPlane.getCurrentAirport());
     newPlane.getCurrentAirport()->updatePassengers(&newPlane);
-    //TODO: plane(crew destructor first, tho)
     planeSet.push_back(newPlane);
 }
 
@@ -231,27 +241,76 @@ void Graph::calculateSteps() {
     }
 }
 
+
 void Graph::cycleUsingDjiskstra(Plane *plane, Airport *origin) {
-    std::vector<std::pair<Airport *, std::pair<bool, std::pair<Airport*, double>>>> airportElems;
+    struct edge {
+        Connection *connection;
+        bool visited = false;
+    };
+
+    struct node {
+        Airport* airport;
+        std::vector<struct edge> edges;
+        bool visited;
+        struct node *via;
+        double distance;
+        int queueIndex = 0;
+
+        bool operator<(const struct node &a) const { return distance < a.distance; }
+    };
+
+
+    std::vector<struct node> nodes;
     for (auto airport : airportSet) {
-        std::pair<Airport *, std::pair<bool, std::pair<Airport*, double>>> a;
-        a.first = airport;
-        a.second.first = false;
-        a.second.second.first = nullptr;
-        a.second.second.second = 0.0;
-        airportElems.emplace_back(a);
+        struct node a{};
+        a.airport = airport;
+        a.visited = false;
+        a.via = nullptr;
+        a.queueIndex = 0;
+        a.distance = std::numeric_limits<double>::max();
+        for (auto connection : *airport->getConnections()) {
+            struct edge b;
+            b.connection = &connection;
+            b.visited = false;
+            a.edges.emplace_back(b);
+        }
+        nodes.emplace_back(a);
     }
 
-    MutablePriorityQueue<Connection *> connections;
+    MutablePriorityQueue<struct node> airportsToVisit;
 
-    Airport* origAirport;
-    origAirport = airportSet.at(0);
-    for (auto airport : airportSet){
-        if (airport->getPassengers().size() > origAirport->getPassengers().size())
-            origAirport->getPassengers().size();
+    struct node *origAirport;
+    origAirport = &nodes.at(0);
+    for (auto node : nodes) {
+        if (node.airport->getPassengers().size() > origAirport->airport->getPassengers().size())
+            origAirport = &node;
     }
+    origAirport->distance = 0.0;
 
+    airportsToVisit.insert(origAirport);
 
+    while (!airportsToVisit.empty()) {
+        struct node *current = airportsToVisit.extractMin();
+        if (!current->visited) {
+            current->visited = true;
+            for (struct edge& edge : current->edges) {
+                struct node *a = &*std::find_if(nodes.begin(), nodes.end(), [&edge](const struct node &a) {
+                    return a.airport == edge.connection->getDestination();
+                });
 
-
+                if ((!a->visited && a->via == nullptr) || current->distance + edge.connection->distance < a->distance) {
+                    if (!a->visited && a->via != nullptr) {
+                        a->distance = current->distance + edge.connection->distance;
+                        a->via = current;
+                        airportsToVisit.decreaseKey(a);
+                    } else {
+                        a->visited = false;
+                        a->distance = current->distance + edge.connection->distance;
+                        a->via = current;
+                        airportsToVisit.insert(a);
+                    }
+                }
+            }
+        }
+    }
 }

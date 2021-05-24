@@ -22,6 +22,11 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
 //----Destructor-----
 Airport::~Airport() {
     connections.clear();
+    /*
+    if(this->replCrew != nullptr){
+        delete this->replCrew;
+    }
+    */
 }
 //-------------------
 
@@ -82,6 +87,7 @@ std::vector<Passenger> Airport::getPassengers() const {
 //------setters------
 void Airport::setReplacementCrew(Crew* newRepl) {
     this->replCrew = newRepl;
+    this->replCrew->setHours(0.0);
 }
 
 void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& airports) {
@@ -126,4 +132,8 @@ void Airport::updatePassengers(Plane *plane) {
     for(auto pas : passengers){
         embark(plane, pas);
     }
+}
+
+bool Airport::hasReplacementCrew(){
+    return this->replCrew != nullptr;
 }

@@ -29,7 +29,15 @@ Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, do
 
 
 //----Destructor-----
-Plane::~Plane() = default;
+Plane::~Plane(){
+
+    /*
+    if(this->crew != nullptr){
+        delete this->crew;
+    }
+    */
+
+}
 //-------------------
 
 
@@ -72,11 +80,20 @@ void Plane::replaceCrew() {
 
 void Plane::traverseEdge(Connection *toTraverse){
     this->route.push_back(toTraverse);
+    this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
 }
 
 void Plane::visitAirport(Airport *next) {
     this->curr = next;
     this->visited.push_back(next);
+}
+
+void Plane::updateCrew() {
+    if(this->crew->getHours() <= 0.0 && this->getCurrentAirport()->hasReplacementCrew()){
+        Crew *newCrew = this->getCurrentAirport()->getReplacementCrew();
+        this->getCurrentAirport()->setReplacementCrew(this->crew);
+        this->setCrew(newCrew);
+    }
 }
 
 double Plane::calculateConsumption(const Connection &c) const {
@@ -88,7 +105,7 @@ bool Plane::canMoveThrough(const Connection &c) const {
     //TODO: weather makes us return false, prob
     if (!c.getDestination()->getAccessibility())
         return false;
-    //TODO: crew work hours
+
     if (this->getCrew()->getHours() * this->speed < c.getDistance())
         return false;
 

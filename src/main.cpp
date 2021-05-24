@@ -63,34 +63,57 @@ void insertNewConnection(Graph g){
 
 }
 
-void readInput(Graph g){
+bool readInput(Graph g){
     std::cout << "-----Welcome to FightNet!-----\n\n";
 
     std::cout << "1-Insert Airport\n";
     std::cout << "2-Insert Connection\n";
-    std::cout << "enter-Run program\n";
+    std::cout << "3-Close menu and run program\n";
+    std::cout << "0-Close the program\n";
 
     std::string input = "";
 
-    while(input != "\n"){
+    while(true){
         std::getline(std::cin,input);
-        if(input == "1")
+        if(input == "1"){
             insertNewAirport(g);
-        if(input == "2")
+        }
+        if(input == "2"){
             insertNewConnection(g);
+        }
+        if(input == "3"){
+            return true;
+        }
+        if(input == "0"){
+            return false;
+        }
     }
-
 }
 
 int main() {
     Graph g;
     //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
     loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
-    //readInput(g);
+    /*
+    while(true){
+
+        if(!readInput(g))
+            break;
+
+        g.generatePassengers(15);
+        g.generatePlanes(2);
+        g.generateReplacementCrews(0);
+        g.calculateSteps();
+        g.viewGraph("");
+        std::cout << "Finish" << std::endl;
+    }
+    */
+
     g.generatePassengers(15);
     g.generatePlanes(1);
     g.generateReplacementCrews(0);
     g.calculateSteps();
     g.viewGraph("");
     std::cout << "Finish" << std::endl;
+
 }

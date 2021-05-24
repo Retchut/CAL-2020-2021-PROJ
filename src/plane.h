@@ -77,6 +77,8 @@ public:
 
     void visitAirport(Airport *next);
 
+    void updateCrew();
+
     Connection* calculateBestConnection();
 
     void nextStep();

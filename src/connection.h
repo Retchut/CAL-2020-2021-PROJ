@@ -22,6 +22,8 @@ public:
     friend class Graph;
 
     friend class Airport;
+
+    bool operator<(const Connection& o);
 };
 
 #endif  /*  _CAL_CONNECTION_H_ */

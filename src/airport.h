@@ -66,6 +66,7 @@ public:
     void embark(Plane* plane, Passenger passenger);
     void disembark(Plane* plane, Passenger passenger);
     void updatePassengers(Plane* plane);
+    bool hasReplacementCrew();
     //-------------------
 };
 

@@ -11,7 +11,7 @@ class Plane;
 
 class Crew {
     unsigned int id;
-    double hours;       //começa com um valor e decrementa?
+    double hours;       //starts with a value and decrements
     Airport *resting;
     Plane *working;
 
@@ -37,6 +37,7 @@ public:
     //-------------------
 
     //------setters------
+    void setHours(double newHours);
     //-------------------
 
     //----other funcs----
@@ -45,6 +46,8 @@ public:
     void startWorking(Plane *working);
 
     void stopWorking(Airport *resting);
+
+    void decrementHours(double amount);
     //-------------------
 };
 

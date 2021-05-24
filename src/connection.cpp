@@ -9,3 +9,7 @@ Airport *Connection::getDestination() const { return this->dest; }
 unsigned Connection::getId() const { return this->id; }
 
 double Connection::getDistance() const { return this->distance; }
+
+bool Connection::operator<(const Connection &o) {
+    return this->distance < o.getDistance();
+}

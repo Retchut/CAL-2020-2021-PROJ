@@ -38,6 +38,9 @@ int Crew::getID() const {
 
 
 //------setters------
+void Crew::setHours(double newHours){
+    this->hours = newHours;
+}
 //-------------------
 
 
@@ -54,5 +57,9 @@ void Crew::startWorking(Plane *nworking) {
 void Crew::stopWorking(Airport *nresting) {
     this->working = nullptr;
     this->resting = nresting;
+}
+
+void Crew::decrementHours(double amount){
+    this->hours -= amount;
 }
 //-------------------
