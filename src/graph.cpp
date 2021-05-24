@@ -60,14 +60,15 @@ bool Graph::removeConnection(const int &ida, const int &idb) {
  * Returns true if successful, and false if either of the source or
  * destination Airports do not exist.
  */
-bool Graph::addConnection(const int &id, const int &source, const int &destination, double dist = 0.0) const {
+bool Graph::addConnection(const int &id, const int &source, const int &destination, double dist = 0.0) {
     if(connectionIds.find(id) != connectionIds.end())
         return false;
     auto a1 = findAirport(source);
     auto a2 = findAirport(destination);
     if (a1 == nullptr || a2 == nullptr)
         return false;
-
+    a1->addConnection(id, a2, dist);
+    connectionIds.insert(id);
     return true;
 }
 
@@ -91,7 +92,6 @@ bool Graph::removeAirport(const int &id) {
                 return false;
         }
     }
-
     connectionIds.erase(id);
     return true;
 }
@@ -105,13 +105,13 @@ Graph::~Graph() {
 void Graph::viewGraph(const std::string &imgPath) const {
     GraphViewer gv;
 
-    //gv.setCenter(sf::Vector2f(0, 0));
+    gv.setCenter(sf::Vector2f(0,  0));
     gv.createWindow(1280, 720);
     if (!imgPath.empty())
         gv.setBackground(imgPath);
 
     for (auto airport : airportSet) {
-        Node &node0 = gv.addNode(airport->id, sf::Vector2f(airport->longitude * 10, -airport->latitude * 10));
+        Node &node0 = gv.addNode(airport->id, sf::Vector2f(airport->longitude * 10 + 800, (-airport->latitude * 10) + 4025));
         node0.setColor(GraphViewer::BLUE);
     }
 
