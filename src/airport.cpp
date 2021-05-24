@@ -73,6 +73,10 @@ int Airport::getId() {return this->id;}
 bool Airport::getAccessibility() {
     return accessible;
 }
+
+std::vector<Passenger> Airport::getPassengers() const {
+    return passengers;
+}
 //-------------------
 
 //------setters------

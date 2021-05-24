@@ -16,6 +16,7 @@ class Plane {
     Airport *src;
     Airport *curr;
     double speed;
+
     double fuelConsump; // l/km
     double maxFuel;
     std::vector<Passenger> currPas;
@@ -23,6 +24,7 @@ class Plane {
     Crew* crew;
     std::vector<Airport *> visited;
     std::vector<Connection *> route;
+    bool arrived;
     size_t airportNumber;
 
 public:
@@ -39,11 +41,15 @@ public:
 
     Airport *getCurrentAirport() const;
 
+    std::vector<Connection *> getRoute() const;
+
     double getSpeed() const;
 
     double getFuelConsumption() const;
 
     double getMaxFuel() const;
+
+    bool hasArrived() const;
 
     std::vector<Passenger> getCurrentPassengers() const;
 

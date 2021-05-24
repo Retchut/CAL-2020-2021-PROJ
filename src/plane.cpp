@@ -19,6 +19,7 @@ Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, do
         maxFuel(maxFuel),
         maxPas(maxPas),
         crew(crew),
+        arrived(false),
         airportNumber(airportNum){
     this->curr = src;
     this->visited = {};
@@ -37,9 +38,13 @@ Airport *Plane::getSourceAirport() const { return this->src; }
 
 Airport *Plane::getCurrentAirport() const { return this->curr; }
 
+std::vector<Connection *> Plane::getRoute() const { return this->route; }
+
 double Plane::getSpeed() const { return this->speed; }
 
 double Plane::getFuelConsumption() const { return this->fuelConsump; }
+
+bool Plane::hasArrived() const { return arrived; }
 
 double Plane::getMaxFuel() const { return this->maxFuel; }
 
@@ -98,12 +103,10 @@ bool Plane::canMoveThrough(const Connection &c) const {
 
 Connection *Plane::calculateBestConnection() {
     if(this->visited.size() == this->airportNumber){
-        //return to origin
-        int t22 = this->src->getId();
-        for(Connection c : this->curr->getConnections()){
-            int t11 = c.getDestination()->getId();
-            if(c.getDestination() == this->src)
-                return &c;
+        std::vector<Connection> temp = this->curr->getConnections();
+        for(auto c = temp.begin(); c < temp.end(); c++){
+            if(c->getDestination() == this->src)
+                return &*c;
         }
     }
 
@@ -129,11 +132,13 @@ Connection *Plane::calculateBestConnection() {
     std::sort(vals.begin(), vals.end(), [](std::pair<Connection *, double> a, std::pair<Connection *, double> b) {
         return a.second > b.second;
     });
-    return vals[0].first;
+    return vals.empty() ? nullptr :  vals[0].first;
 }
 
 void Plane::nextStep() {
     Connection *c = calculateBestConnection();
+    if(c->getDestination() == src)
+        arrived = true;
     traverseEdge(c);
     visitAirport(c->getDestination());
     curr->updatePassengers(this);

@@ -25,6 +25,8 @@ private:
 public:
     int getAirportNum() const;
 
+    int getConnectionNum() const;
+
     Airport *findAirport(const int &id) const;
 
     bool addAirport(const int &aid, const double &latitude, const double &longitude);

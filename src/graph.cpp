@@ -14,6 +14,10 @@ int Graph::getAirportNum() const {
     return airportSet.size();
 }
 
+int Graph::getConnectionNum() const {
+    return connectionIds.size();
+}
+
 /*
  * Auxiliary function to find an airport with a given location.
  */
@@ -118,6 +122,8 @@ void Graph::viewGraph(const std::string &imgPath) const {
         node0.setColor(GraphViewer::BLUE);
     }
 
+    /*
+    //Display connections between airports:
     for (auto airport : airportSet) {
         for (auto connection : airport->connections) {
 
@@ -126,7 +132,35 @@ void Graph::viewGraph(const std::string &imgPath) const {
                                GraphViewer::Edge::EdgeType::UNDIRECTED);
             edge.setColor(GraphViewer::BLACK);
         }
+    }
+    */
+    /*
+     *  static const Color BLACK     ;
+        static const Color WHITE     ;
+        static const Color RED       ;
+        static const Color GREEN     ;
+        static const Color BLUE      ;
+        static const Color YELLOW    ;
+        static const Color MAGENTA   ;
+        static const Color CYAN      ;
+        static const Color PINK      ;
+        static const Color ORANGE    ;
+        static const Color GRAY      ;
+        static const Color LIGHT_GRAY;
+        static const Color DARK_GRAY ;
+     */
+    GraphViewer::Color colors[13] = {GraphViewer::BLACK, GraphViewer::WHITE, GraphViewer::RED, GraphViewer::GREEN,
+                                    GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
+                                    GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
+                                    GraphViewer::DARK_GRAY};
+    for (auto plane : planeSet) {
+        for (size_t i = 0; i < plane.getRoute().size(); i++) {
 
+            Edge &edge =
+                    gv.addEdge(plane.getRoute()[i]->getId(), gv.getNode(plane.getRoute()[i]->orig->getId()), gv.getNode(plane.getRoute()[i]->dest->id),
+                               GraphViewer::Edge::EdgeType::DIRECTED);
+            edge.setColor(colors[i%13]);
+        }
     }
 
     gv.join();
@@ -179,9 +213,15 @@ void Graph::generatePlanes(size_t planeNum) {
 }
 
 void Graph::calculateSteps() {
-    while (true) {
+    unsigned long planes = planeSet.size();
+    while (planes > 0) {
+
         for (Plane &p : planeSet) {
-            p.nextStep();
+            if (!p.hasArrived()) {
+                p.nextStep();
+            } else {
+                planes--;
+            }
         }
 
 
@@ -191,7 +231,27 @@ void Graph::calculateSteps() {
     }
 }
 
-void Graph::cycleUsingDjiskstra(Plane *plane, Airport* origin) {
-    //MutablePriorityQueue<Connection *> connections;
+void Graph::cycleUsingDjiskstra(Plane *plane, Airport *origin) {
+    std::vector<std::pair<Airport *, std::pair<bool, std::pair<Airport*, double>>>> airportElems;
+    for (auto airport : airportSet) {
+        std::pair<Airport *, std::pair<bool, std::pair<Airport*, double>>> a;
+        a.first = airport;
+        a.second.first = false;
+        a.second.second.first = nullptr;
+        a.second.second.second = 0.0;
+        airportElems.emplace_back(a);
+    }
+
+    MutablePriorityQueue<Connection *> connections;
+
+    Airport* origAirport;
+    origAirport = airportSet.at(0);
+    for (auto airport : airportSet){
+        if (airport->getPassengers().size() > origAirport->getPassengers().size())
+            origAirport->getPassengers().size();
+    }
+
+
+
 
 }
