@@ -16,11 +16,10 @@ class Plane {
     double speed;
     double currFuel;
     double maxFuel;
-    std::vector<Passenger *> currPas;
+    std::vector<Passenger> currPas;
     unsigned int maxPas;
     Crew *crew;
     std::vector<Airport *> visited;
-    std::set<Passenger> passengers;
 
 public:
     //----Constructor----
@@ -43,7 +42,7 @@ public:
 
     double getMaxFuel() const;
 
-    std::vector<Passenger *> getCurrentPassengers() const;
+    std::vector<Passenger> getCurrentPassengers() const;
 
     unsigned int getMaxPassengers() const;
 
@@ -60,6 +59,10 @@ public:
     void replaceCrew();
 
     void visitAirport();
+
+    void addPassenger(Passenger * passenger);
+
+    void removePassenger(Passenger * passenger);
     //functions to add and remove passengers
     //-------------------
 };

@@ -31,7 +31,7 @@ double Plane::getCurrentFuel() const { return this->currFuel; }
 
 double Plane::getMaxFuel() const { return this->maxFuel; }
 
-std::vector<Passenger *> Plane::getCurrentPassengers() const { return this->currPas; }
+std::vector<Passenger> Plane::getCurrentPassengers() const { return this->currPas; }
 
 unsigned int Plane::getMaxPassengers() const { return this->maxPas; }
 
@@ -56,5 +56,19 @@ void Plane::replaceCrew() {
 
 void Plane::visitAirport() {
     this->visited.push_back(this->curr);
+}
+
+void Plane::addPassenger(Passenger * passenger) {
+    if(this->currPas.size() > this->maxPas)
+        this->currPas.push_back(*passenger);
+}
+
+void Plane::removePassenger(Passenger *passenger) {
+    for(auto it = this->currPas.begin(); it != this->currPas.end();it++){
+        if(*it == *passenger){
+            this->currPas.erase(it);
+            return;
+        }
+    }
 }
 //-------------------
