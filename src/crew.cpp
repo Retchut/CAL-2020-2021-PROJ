@@ -7,9 +7,9 @@
 #include "plane.h"
 
 //----Constructor----
-Crew::Crew(double hours, Airport *resting) : hours(hours), resting(resting), working(nullptr) {}
+Crew::Crew(unsigned int id, Airport *resting) : id(id), hours(8.0), resting(resting), working(nullptr) {}
 
-Crew::Crew(double hours, Plane *working) : hours(hours), working(working), resting(nullptr) {}
+Crew::Crew(unsigned int id, Plane *working) : id(id), hours(8.0), working(working), resting(nullptr) {}
 //-------------------
 
 
@@ -29,6 +29,10 @@ Airport *Crew::getRestingAirport() {
 
 Plane *Crew::getWorkingAirport() {
     return this->working;
+}
+
+int Crew::getID() const {
+    return this->id;
 }
 //-------------------
 

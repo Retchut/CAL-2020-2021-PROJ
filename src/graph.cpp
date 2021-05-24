@@ -2,6 +2,8 @@
 
 #include "airport.h"
 #include "connection.h"
+#include "crew.h"
+#include "plane.h"
 #include "graphviewer.h"
 
 using Node = GraphViewer::Node;
@@ -135,8 +137,48 @@ void Graph::generatePassengers(const int& maxNr) {
     }
 }
 
+void Graph::generateRandomPlane(const unsigned int& id){
+    /*
+     * https://en.wikipedia.org/wiki/Airbus_A350
+     * The Airbus A350 constitutes the model for our planes
+     * -speed: 1040 - 1090,
+     * -fuel consumption: 5000-5800 l/h
+     * -max fuel: 165000 l
+     * -passenger: 350-410
+     */
+    unsigned int speed = 1040 + (rand() % 50);
+    unsigned int consumption = 5000 + (rand() % 800);
+    unsigned int maxFuel = 165000;
+    unsigned int maxPass = 350 + (rand() % 350);
+    unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
+    Plane newPlane = Plane(id, findAirport(airportId), speed, consumption, maxFuel, maxPass, nullptr);
+    Crew* crew = new Crew(id, &newPlane);
+    newPlane.setCrew(crew);
+    //TODO: plane(crew destructor first, tho)
+    newPlane.getCurrentAirport()->updatePassengers(&newPlane);
+    planeSet.push_back(newPlane);
+}
+
+void Graph::generateReplacementCrews(size_t restingNum){
+    unsigned int startID = airportSet.size() + 1;
+    for(size_t i = 0; i < restingNum; i++){
+        Airport *at = airportSet[rand() % airportSet.size()];
+        Crew * resting = new Crew(startID + i, at);
+        at->setReplacementCrew(resting);
+    }
+}
+
+void Graph::generatePlanes(size_t planeNum) {
+    for(size_t i = 0; i < planeNum; i++) {
+        generateRandomPlane(i);
+    }
+}
 void Graph::calculateSteps() {
     for(auto p : planeSet){
-        p->nextStep();
+        p.nextStep();
+    }
+
+    for(auto p : planeSet){
+        p.printRoute();
     }
 }

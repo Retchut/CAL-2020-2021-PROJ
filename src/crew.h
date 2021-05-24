@@ -10,15 +10,16 @@ class Airport;
 class Plane;
 
 class Crew {
+    unsigned int id;
     double hours;       //começa com um valor e decrementa?
     Airport *resting;
     Plane *working;
 
 public:
     //----Constructor----
-    Crew(double hours, Airport *resting);
+    Crew(unsigned int id, Airport *resting);
 
-    Crew(double hours, Plane *working);
+    Crew(unsigned int id, Plane *working);
     //-------------------
 
     //----Destructor-----
@@ -27,6 +28,8 @@ public:
 
     //------getters------
     double getHours() const;
+
+    int getID() const;
 
     Airport *getRestingAirport();
 

@@ -7,6 +7,8 @@
 
 
 #include "passenger.h"
+#include "plane.h"
+
 class Airport;
 
 class Connection;
@@ -15,8 +17,10 @@ class Connection;
 class Graph {
 private:
     std::vector<Airport *> airportSet;    // vertex set
-    std::vector<Plane *> planeSet;
+    std::vector<Plane> planeSet;
     std::set<int> connectionIds;
+
+    void generateRandomPlane(const unsigned int& planeNum);
 
 public:
     int getAirportNum() const;
@@ -33,7 +37,9 @@ public:
 
     void generatePassengers(const int& maxNr);
 
-    void generatePlanes();
+    void generateReplacementCrews(size_t restingNum);
+
+    void generatePlanes(size_t planeNum);
 
     void calculateSteps();
 

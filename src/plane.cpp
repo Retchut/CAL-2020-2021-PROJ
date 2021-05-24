@@ -5,9 +5,12 @@
 #include "passenger.h"
 #include "crew.h"
 
+#include <iostream>
+
 //----Constructor----
-Plane::Plane(Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas,
+Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas,
              Crew *crew) :
+         id(id),
         src(src),
         speed(speed),
         fuelConsump(
@@ -46,6 +49,9 @@ Crew *Plane::getCrew() const { return this->crew; }
 
 
 //------setters------
+void Plane::setCrew(Crew* newCrew) {
+    this->crew = newCrew;
+}
 //-------------------
 
 
@@ -68,10 +74,13 @@ double Plane::calculateConsumption(const Connection &c) const {
 
 bool Plane::canMoveThrough(const Connection &c) const {
     //TODO: weather makes us return false, prob
-    if(!c.getDestination()->getAccessibility())
+    if (!c.getDestination()->getAccessibility())
         return false;
     //TODO: crew work hours
-    if(this->getCrew()->getHours()*this->speed < c.getDistance())
+    if (this->getCrew()->getHours() * this->speed < c.getDistance())
+        return false;
+    if (c.getDestination()->getId() != this->getSourceAirport()->getId() &&
+        std::find(this->visited.begin(), this->visited.end(), c.getDestination()) != this->visited.end())
         return false;
     return calculateConsumption(c) <= this->maxFuel;
 }
@@ -106,7 +115,14 @@ Connection *Plane::calculateBestConnection() {
 void Plane::nextStep() {
     Connection *c = calculateBestConnection();
     visitAirport(c->getDestination());
-    curr->updatePassengers();
+    curr->updatePassengers(this);
+}
+
+void Plane::printRoute(){
+    for(int i = 0; i < this->visited.size(); i++){
+        std::cout << this->visited[i]->getId() << " ";
+    }
+    std::cout << "\n";
 }
 
 // ------------

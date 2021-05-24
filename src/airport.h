@@ -49,14 +49,14 @@ public:
 
     //------getters------
     std::vector<Connection> getConnections();
-    Crew *getReplacementCrew();
+    Crew* getReplacementCrew();
 
     int getId();
     bool getAccessibility();
     //-------------------
 
     //------setters------
-    void setReplacementCrew(Crew *newRepl);
+    void setReplacementCrew(Crew* newRepl);
     void generatePassengers(const int &nr, const std::vector<Airport *>& airports);
     //-------------------
 
@@ -65,7 +65,7 @@ public:
     void disembark(Plane* plane);
     void embark(Plane* plane, Passenger passenger);
     void disembark(Plane* plane, Passenger passenger);
-    void updatePassengers();
+    void updatePassengers(Plane* plane);
     //-------------------
 };
 

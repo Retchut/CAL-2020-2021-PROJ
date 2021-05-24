@@ -11,7 +11,7 @@ class Connection {
 public:
     Connection(const int &id, Airport *o, Airport *d, double dist);
 
-    Airport *getOrigin();
+    Airport *getOrigin() const;
 
     Airport *getDestination() const;
 

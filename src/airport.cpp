@@ -7,20 +7,15 @@
 
 //----Constructor----
 Airport::Airport(const int &id, const double &latitude, const double &longitude) : id(id), latitude(latitude),
-                                                                                   longitude(longitude), visited(false),
-                                                                                   processing(false), indegree(0),
-                                                                                   replCrew(nullptr) {}
+                                                                                   longitude(longitude){
+}
 
 Airport::Airport(const int &id, const double &latitude, const double &longitude, std::string name) : id(id),
                                                                                                      name(std::move(
                                                                                                              name)),
                                                                                                      latitude(latitude),
                                                                                                      longitude(
-                                                                                                             longitude),
-                                                                                                     visited(false),
-                                                                                                     processing(false),
-                                                                                                     indegree(0),
-                                                                                                     replCrew(nullptr) {}
+                                                                                                             longitude) {}
 //-------------------
 
 
@@ -71,7 +66,7 @@ bool Airport::removeConnections() {
 //------getters------
 std::vector<Connection> Airport::getConnections() { return this->connections; }
 
-Crew *Airport::getReplacementCrew() { return this->replCrew; }
+Crew* Airport::getReplacementCrew() { return this->replCrew; }
 
 int Airport::getId() {return this->id;}
 
@@ -81,7 +76,7 @@ bool Airport::getAccessibility() {
 //-------------------
 
 //------setters------
-void Airport::setReplacementCrew(Crew *newRepl) {
+void Airport::setReplacementCrew(Crew* newRepl) {
     this->replCrew = newRepl;
 }
 
@@ -115,4 +110,16 @@ void Airport::embark(Plane *plane, Passenger passenger) {
 void Airport::disembark(Plane *plane, Passenger passenger) {
     if(plane->removePassenger(passenger) && passenger.getDestination()->getId() != this->id)
         this->passengers.push_back(passenger);
+}
+
+void Airport::updatePassengers(Plane *plane) {
+    for(auto pas : plane->getCurrentPassengers()){
+        if(pas.getDestination() == this) {
+            disembark(plane, pas);
+        }
+    }
+
+    for(auto pas : passengers){
+        embark(plane, pas);
+    }
 }

@@ -4,12 +4,15 @@
 #include <vector>
 #include <set>
 
+#include "crew.h"
+
 class Airport;
 class Connection;
 class Passenger;
 class Crew;
 
 class Plane {
+    unsigned int id;
     Airport *src;
     Airport *curr;
     double speed;
@@ -17,12 +20,12 @@ class Plane {
     double maxFuel;
     std::vector<Passenger> currPas;
     unsigned int maxPas;
-    Crew *crew;
+    Crew* crew;
     std::vector<Airport *> visited;
 
 public:
     //----Constructor----
-    Plane(Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas, Crew *crew);
+    Plane(unsigned int id, Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas, Crew *crew);
     //-------------------
 
     //----Destructor-----
@@ -51,6 +54,7 @@ public:
     //-------------------
 
     //------setters------
+    void setCrew(Crew* newCrew);
     // add passengers
     // remove passengers
     //-------------------
@@ -64,9 +68,11 @@ public:
 
     void visitAirport(Airport *next);
 
+    Connection* calculateBestConnection();
+
     void nextStep();
 
-    Connection* calculateBestConnection();
+    void printRoute();
 
 
     //functions to add and remove passengers
