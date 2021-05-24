@@ -131,13 +131,13 @@ void Graph::viewGraph(const std::string &imgPath) const {
     gv.join();
 }
 
-void Graph::generatePassengers(const int& maxNr) {
-    for(auto airport : airportSet){
+void Graph::generatePassengers(const int &maxNr) {
+    for (auto airport : airportSet) {
         airport->generatePassengers(maxNr, airportSet);
     }
 }
 
-void Graph::generateRandomPlane(const unsigned int& id){
+void Graph::generateRandomPlane(const unsigned int &id) {
     /*
      * https://en.wikipedia.org/wiki/Airbus_A350
      * The Airbus A350 constitutes the model for our planes
@@ -147,38 +147,44 @@ void Graph::generateRandomPlane(const unsigned int& id){
      * -passenger: 350-410
      */
     unsigned int speed = 1040 + (rand() % 50);
-    unsigned int consumption = 5000 + (rand() % 800);
+    unsigned int consumption = 4.8 + (rand() % 5);
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
     unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
-    Plane newPlane = Plane(id, findAirport(airportId), speed, consumption, maxFuel, maxPass, nullptr);
-    Crew* crew = new Crew(id, &newPlane);
+    //Plane newPlane = Plane(id, findAirport(airportId), speed, consumption/speed, maxFuel, maxPass, nullptr);
+    Plane newPlane = Plane(id, findAirport(1), speed, consumption / speed, maxFuel, maxPass, nullptr);
+    Crew *crew = new Crew(id, &newPlane);
     newPlane.setCrew(crew);
-    //TODO: plane(crew destructor first, tho)
+    newPlane.visitAirport(newPlane.getCurrentAirport());
     newPlane.getCurrentAirport()->updatePassengers(&newPlane);
+    //TODO: plane(crew destructor first, tho)
     planeSet.push_back(newPlane);
 }
 
-void Graph::generateReplacementCrews(size_t restingNum){
+void Graph::generateReplacementCrews(size_t restingNum) {
     unsigned int startID = airportSet.size() + 1;
-    for(size_t i = 0; i < restingNum; i++){
+    for (size_t i = 0; i < restingNum; i++) {
         Airport *at = airportSet[rand() % airportSet.size()];
-        Crew * resting = new Crew(startID + i, at);
+        Crew *resting = new Crew(startID + i, at);
         at->setReplacementCrew(resting);
     }
 }
 
 void Graph::generatePlanes(size_t planeNum) {
-    for(size_t i = 0; i < planeNum; i++) {
+    for (size_t i = 0; i < planeNum; i++) {
         generateRandomPlane(i);
     }
 }
-void Graph::calculateSteps() {
-    for(auto p : planeSet){
-        p.nextStep();
-    }
 
-    for(auto p : planeSet){
-        p.printRoute();
+void Graph::calculateSteps() {
+    while (true) {
+        for (Plane &p : planeSet) {
+            p.nextStep();
+        }
+
+
+        for (auto p : planeSet) {
+            p.printRoute();
+        }
     }
 }
