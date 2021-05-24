@@ -36,7 +36,7 @@ public:
 
     double getSpeed() const;
 
-    double getCurrentFuel() const;
+    double getFuelConsumption() const;
 
     double getMaxFuel() const;
 

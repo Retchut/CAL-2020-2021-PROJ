@@ -33,7 +33,7 @@ Airport *Plane::getCurrentAirport() const { return this->curr; }
 
 double Plane::getSpeed() const { return this->speed; }
 
-double Plane::getCurrentFuel() const { return this->currFuel; }
+double Plane::getFuelConsumption() const { return this->fuelConsump; }
 
 double Plane::getMaxFuel() const { return this->maxFuel; }
 
@@ -71,7 +71,8 @@ bool Plane::canMoveThrough(const Connection &c) const {
     if(!c.getDestination()->getAccessibility())
         return false;
     //TODO: crew work hours
-    if(this.cr)
+    if(this->getCrew()->getHours()*this->speed < c.getDistance())
+        return false;
     return calculateConsumption(c) <= this->maxFuel;
 }
 
