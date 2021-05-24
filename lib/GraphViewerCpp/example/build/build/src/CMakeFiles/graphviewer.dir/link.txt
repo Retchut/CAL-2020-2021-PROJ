@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../lib/libgraphviewer.a CMakeFiles/graphviewer.dir/graphviewer.cpp.o CMakeFiles/graphviewer.dir/node.cpp.o CMakeFiles/graphviewer.dir/edge.cpp.o CMakeFiles/graphviewer.dir/lines.cpp.o CMakeFiles/graphviewer.dir/fpsmonitor.cpp.o
+/usr/bin/ranlib ../../../../lib/libgraphviewer.a

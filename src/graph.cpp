@@ -61,11 +61,13 @@ bool Graph::removeConnection(const int &ida, const int &idb) {
  * destination Airports do not exist.
  */
 bool Graph::addConnection(const int &id, const int &source, const int &destination, double dist = 0.0) const {
+    if(connectionIds.find(id) != connectionIds.end())
+        return false;
     auto a1 = findAirport(source);
     auto a2 = findAirport(destination);
     if (a1 == nullptr || a2 == nullptr)
         return false;
-    a1->addConnection(id, a2, dist);
+
     return true;
 }
 
@@ -83,10 +85,15 @@ bool Graph::removeAirport(const int &id) {
             if (!(*it)->removeConnections())
                 return false;
             this->airportSet.erase(it);
-            return true;
+        }
+        else{
+            if ((*it)->removeConnectionTo(a))
+                return false;
         }
     }
-    return false;
+
+    connectionIds.erase(id);
+    return true;
 }
 
 Graph::~Graph() {
@@ -113,7 +120,7 @@ void Graph::viewGraph(const std::string &imgPath) const {
             Edge &edge =
                     gv.addEdge(connection.id, gv.getNode(connection.orig->id), gv.getNode(connection.dest->id),
                                GraphViewer::Edge::EdgeType::UNDIRECTED);
-            edge.setColor(GraphViewer::GREEN);
+            edge.setColor(GraphViewer::BLACK);
         }
 
     }

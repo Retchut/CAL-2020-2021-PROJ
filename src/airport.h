@@ -22,7 +22,7 @@ class Airport {
 	Crew *replCrew;
 
 	void addConnection(const int& conId, Airport *d, double dist);
-	bool removeConnectionTo(Airport *d);
+    bool removeConnectionTo(Airport *d);
     bool removeConnections();
 
     public:

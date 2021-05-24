@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 class Airport;
 class Connection;
@@ -10,7 +11,7 @@ class Connection;
 class Graph {
 private:
     std::vector<Airport *> airportSet;    // vertex set
-
+    std::set<int> connectionIds;
 public:
     int getAirportNum() const;
     Airport *findAirport(const int& id) const;

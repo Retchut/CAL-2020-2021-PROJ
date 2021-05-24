@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/example.dir/main.cpp.o -o ../example  /home/dmfr/Documents/Superior/2S2/CAL/GraphViewerCpp/lib/libgraphviewer.a -lsfml-graphics -lsfml-window -lsfml-system -lpthread -lX11 

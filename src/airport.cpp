@@ -46,8 +46,7 @@ void Airport::addConnection(const int& id, Airport *d, double dist) {
  * Returns true if successful, and false if such edge does not exist.
  */
 bool Airport::removeConnectionTo(Airport *d) {
-    auto it = this->connections.begin();
-    for (it; it != this->connections.end(); it++) {
+    for (auto it = this->connections.begin(); it != this->connections.end(); it++) {
         if ((*it).dest == d) {
             this->connections.erase(it);
             return true;

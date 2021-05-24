@@ -66,9 +66,9 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
         int idName = std::stoi(rowB.substr(0, rowB.find_first_of(',')));
         rowB.erase(0, rowB.find_first_of(',') + 1);
         if (idName == idNode)
-            graph.addAirport(idNode, latitude, longitude, rowB);
+            graph.addAirport(idNode, latitude*10, longitude*10, rowB);
         else
-            graph.addAirport(idNode, latitude, longitude);
+            graph.addAirport(idNode, latitude*10, longitude*10);
     }
 
     fileA.close();
