@@ -63,10 +63,11 @@ public:
 
     void visitAirport();
 
-    bool addPassenger(Passenger  passenger);
 
-    bool removePassenger(Passenger  passenger);
     //functions to add and remove passengers
+    bool addPassenger(const Passenger&  passenger);
+
+    bool removePassenger(const Passenger&  passenger);
     //-------------------
 };
 
