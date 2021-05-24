@@ -15,6 +15,7 @@ class Connection;
 class Graph {
 private:
     std::vector<Airport *> airportSet;    // vertex set
+    std::vector<Plane *> planeSet;
     std::set<int> connectionIds;
 
 public:
@@ -32,11 +33,9 @@ public:
 
     void generatePassengers(const int& maxNr);
 
-    void updatePassengers();
-
     void generatePlanes();
 
-    std::vector<int> nearestNeighbour();
+    void nearestNeighbour();
 
     bool removeAirport(const int &aid);
 

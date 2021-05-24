@@ -134,3 +134,6 @@ void Graph::generatePassengers(const int& maxNr) {
         airport->generatePassengers(maxNr, airportSet);
     }
 }
+
+void Graph::nearestNeighbour() {
+}
