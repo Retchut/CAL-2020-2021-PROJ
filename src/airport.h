@@ -53,6 +53,8 @@ public:
     //------setters------
     void setReplacementCrew(Crew *newRepl);
     void generatePassengers(const int& nr);
+    void embark(Plane* plane);
+    void disembark(Plane* plane);
     //-------------------
 
     //----other funcs----
