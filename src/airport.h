@@ -48,6 +48,8 @@ public:
 
     //------getters------
     Crew *getReplacementCrew();
+
+    int getId();
     //-------------------
 
     //------setters------
