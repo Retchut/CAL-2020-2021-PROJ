@@ -135,5 +135,8 @@ void Graph::generatePassengers(const int& maxNr) {
     }
 }
 
-void Graph::nearestNeighbour() {
+void Graph::calculateSteps() {
+    for(auto p : planeSet){
+        p->nextStep();
+    }
 }

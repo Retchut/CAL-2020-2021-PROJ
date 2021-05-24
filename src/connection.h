@@ -13,9 +13,9 @@ public:
 
     Airport *getOrigin();
 
-    Airport *getDestination();
+    Airport *getDestination() const;
 
-    double getDistance();
+    double getDistance() const;
 
     friend class Graph;
 

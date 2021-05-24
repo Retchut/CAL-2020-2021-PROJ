@@ -6,4 +6,4 @@ Airport *Connection::getOrigin() { return this->orig; }
 
 Airport *Connection::getDestination() { return this->dest; }
 
-double Connection::getDistance() { return this->distance; }
+double Connection::getDistance() const{ return this->distance; }

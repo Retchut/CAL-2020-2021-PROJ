@@ -26,6 +26,7 @@ class Airport {
     int indegree;          // auxiliary field used by topsort
     Crew *replCrew;
     std::vector<Passenger> passengers;
+    bool accessible = true;
 
     void addConnection(const int &conId, Airport *d, double dist);
 
@@ -47,9 +48,11 @@ public:
     //-------------------
 
     //------getters------
+    std::vector<Connection> getConnections();
     Crew *getReplacementCrew();
 
     int getId();
+    bool getAccessibility();
     //-------------------
 
     //------setters------

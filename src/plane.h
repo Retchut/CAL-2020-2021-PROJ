@@ -5,16 +5,15 @@
 #include <set>
 
 class Airport;
-
+class Connection;
 class Passenger;
-
 class Crew;
 
 class Plane {
     Airport *src;
     Airport *curr;
     double speed;
-    double currFuel;
+    double fuelConsump; // l/km
     double maxFuel;
     std::vector<Passenger> currPas;
     unsigned int maxPas;
@@ -23,7 +22,7 @@ class Plane {
 
 public:
     //----Constructor----
-    Plane(Airport *src, double speed, double currFuel, double maxFuel, unsigned int maxPas, Crew *crew);
+    Plane(Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas, Crew *crew);
     //-------------------
 
     //----Destructor-----
@@ -57,11 +56,17 @@ public:
     //-------------------
 
     //----other funcs----
-    void replenishFuel();
+    double calculateConsumption(const Connection &c) const;
+
+    bool canMoveThrough(const Connection &c) const;
 
     void replaceCrew();
 
-    void visitAirport();
+    void visitAirport(Airport *next);
+
+    void nextStep();
+
+    Connection* calculateBestConnection();
 
 
     //functions to add and remove passengers

@@ -69,9 +69,15 @@ bool Airport::removeConnections() {
 
 
 //------getters------
+std::vector<Connection> Airport::getConnections() { return this->connections; }
+
 Crew *Airport::getReplacementCrew() { return this->replCrew; }
 
 int Airport::getId() {return this->id;}
+
+bool Airport::getAccessibility() {
+    return accessible;
+}
 //-------------------
 
 //------setters------

@@ -35,7 +35,7 @@ public:
 
     void generatePlanes();
 
-    void nearestNeighbour();
+    void calculateSteps();
 
     bool removeAirport(const int &aid);
 

@@ -1,16 +1,20 @@
+#include <algorithm>
 #include "plane.h"
 #include "airport.h"
+#include "connection.h"
 #include "passenger.h"
 #include "crew.h"
 
 //----Constructor----
-Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel, unsigned int maxPas, Crew *crew) : src(src),
-                                                                                                             speed(speed),
-                                                                                                             currFuel(
-                                                                                                                     currFuel),
-                                                                                                             maxFuel(maxFuel),
-                                                                                                             maxPas(maxPas),
-                                                                                                             crew(crew) {
+Plane::Plane(Airport *src, double speed, double fuelConsump, double maxFuel, unsigned int maxPas,
+             Crew *crew) :
+        src(src),
+        speed(speed),
+        fuelConsump(
+                fuelConsump),
+        maxFuel(maxFuel),
+        maxPas(maxPas),
+        crew(crew) {
     this->curr = src;
     this->visited = {};
 }
@@ -46,35 +50,78 @@ Crew *Plane::getCrew() const { return this->crew; }
 
 
 //----other funcs----
-void Plane::replenishFuel() {
-    this->currFuel = this->maxFuel;
-}
-
 void Plane::replaceCrew() {
     Crew *oldCrew = this->crew;
     this->crew = this->curr->getReplacementCrew();
     this->curr->setReplacementCrew(oldCrew);
 }
 
-void Plane::visitAirport() {
-    this->visited.push_back(this->curr);
+void Plane::visitAirport(Airport *next) {
+    this->curr = next;
+    this->visited.push_back(next);
 }
 
+double Plane::calculateConsumption(const Connection &c) const {
+    double dist = c.getDistance();
+    return fuelConsump * dist;
+}
+
+bool Plane::canMoveThrough(const Connection &c) const {
+    //TODO: weather makes us return false, prob
+    if(!c.getDestination()->getAccessibility())
+        return false;
+    //TODO: crew work hours
+    if(this.cr)
+    return calculateConsumption(c) <= this->maxFuel;
+}
+
+Connection *Plane::calculateBestConnection() {
+    std::vector<std::pair<Connection *, double>> vals = {};
+
+    for (auto c : this->curr->getConnections()) {
+        double val = 0.0;
+        if (canMoveThrough(c)) {
+            if (!this->currPas.empty()) {
+                for (const auto &pas : this->currPas) {
+                    if (pas.getDestination() == c.getDestination())
+                        val += 1;
+                }
+                val = 0.6 * (val / this->currPas.size()) + 0.4 * (0.4 / (c.getDistance() / 100));
+            } else {
+                val = 1 / c.getDistance();
+            }
+
+            vals.emplace_back(std::make_pair(&c, val));
+        }
+    }
+    //descending
+    std::sort(vals.begin(), vals.end(), [](std::pair<Connection *, double> a, std::pair<Connection *, double> b) {
+        return a.second > b.second;
+    });
+
+    return vals[0].first;
+}
+
+void Plane::nextStep() {
+    Connection *c = calculateBestConnection();
+    visitAirport(c->getDestination());
+    curr->updatePassengers();
+}
 
 // ------------
 
 //---funcs to add and remove passengers
-bool Plane::addPassenger(const Passenger& passenger) {
-    if(this->currPas.size() > this->maxPas){
+bool Plane::addPassenger(const Passenger &passenger) {
+    if (this->currPas.size() > this->maxPas) {
         this->currPas.push_back(passenger);
         return true;
     }
     return false;
 }
 
-bool Plane::removePassenger(const Passenger& passenger) {
-    for(auto it = this->currPas.begin(); it != this->currPas.end();it++){
-        if(*it == passenger){
+bool Plane::removePassenger(const Passenger &passenger) {
+    for (auto it = this->currPas.begin(); it != this->currPas.end(); it++) {
+        if (*it == passenger) {
             this->currPas.erase(it);
             return true;
         }
