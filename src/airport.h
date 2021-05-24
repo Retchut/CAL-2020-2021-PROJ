@@ -60,6 +60,8 @@ public:
     //----other funcs----
     void embark(Plane* plane);
     void disembark(Plane* plane);
+    void embark(Plane* plane, Passenger passenger);
+    void disembark(Plane* plane, Passenger passenger);
     void updatePassengers();
     //-------------------
 };
