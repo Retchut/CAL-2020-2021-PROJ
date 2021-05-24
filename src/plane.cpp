@@ -18,7 +18,7 @@ Plane::Plane(Airport *src, double speed, double currFuel, double maxFuel, unsign
 
 
 //----Destructor-----
-Plane::~Plane() {}
+Plane::~Plane() = default;
 //-------------------
 
 
@@ -60,12 +60,12 @@ void Plane::visitAirport() {
     this->visited.push_back(this->curr);
 }
 
-void Plane::addPassenger(Passenger passenger) {
+void Plane::addPassenger(const Passenger& passenger) {
     if(this->currPas.size() > this->maxPas)
         this->currPas.push_back(passenger);
 }
 
-void Plane::removePassenger(Passenger passenger) {
+void Plane::removePassenger(const Passenger& passenger) {
     for(auto it = this->currPas.begin(); it != this->currPas.end();it++){
         if(*it == passenger){
             this->currPas.erase(it);

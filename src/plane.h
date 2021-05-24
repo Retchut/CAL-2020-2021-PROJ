@@ -63,9 +63,9 @@ public:
 
     void visitAirport();
 
-    void addPassenger(Passenger  passenger);
+    void addPassenger(const Passenger&  passenger);
 
-    void removePassenger(Passenger  passenger);
+    void removePassenger(const Passenger&  passenger);
     //functions to add and remove passengers
     //-------------------
 };
