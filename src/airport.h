@@ -55,13 +55,11 @@ public:
     //------setters------
     void setReplacementCrew(Crew *newRepl);
     void generatePassengers(const int &nr, const std::vector<Airport *>& airports);
-    void embark(Plane* plane);
-    void disembark(Plane* plane);
     //-------------------
 
     //----other funcs----
-    void embark(Plane * plane, Passenger passenger);
-    void disembark(Plane * plane, Passenger passenger);
+    void embark(Plane* plane);
+    void disembark(Plane* plane);
     void updatePassengers();
     //-------------------
 };
