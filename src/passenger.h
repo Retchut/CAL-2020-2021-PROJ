@@ -5,7 +5,12 @@ class Airport;
 
 class Plane;
 
+
+
 class Passenger {
+    static int idcnt;
+
+    int id;
     Airport *src;
     Airport *dest;
     Plane *plane;
@@ -31,6 +36,8 @@ public:
     //------setters------
     void setPlane(Plane *plane);
     //-------------------
+
+   bool operator==( const Passenger& a) const;
 };
 
 

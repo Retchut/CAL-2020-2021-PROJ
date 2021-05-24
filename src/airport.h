@@ -3,9 +3,12 @@
 
 #include <vector>
 #include <string>
+#include <set>
+
+#include "passenger.h"
 
 class Connection;
-
+class Passenger;
 class Crew;
 
 class Airport {
@@ -21,6 +24,7 @@ class Airport {
     bool processing;       // auxiliary field used by isDAG
     int indegree;          // auxiliary field used by topsort
     Crew *replCrew;
+    std::set<Passenger> passengers;
 
     void addConnection(const int &conId, Airport *d, double dist);
 
@@ -47,6 +51,7 @@ public:
 
     //------setters------
     void setReplacementCrew(Crew *newRepl);
+    void generatePassengers(const int& nr);
     //-------------------
 
     //----other funcs----

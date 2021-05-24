@@ -2,6 +2,7 @@
 #define PROJ_PLANE_H
 
 #include <vector>
+#include <set>
 
 class Airport;
 
@@ -19,6 +20,7 @@ class Plane {
     unsigned int maxPas;
     Crew *crew;
     std::vector<Airport *> visited;
+    std::set<Passenger> passengers;
 
 public:
     //----Constructor----
@@ -49,6 +51,7 @@ public:
     //-------------------
 
     //------setters------
+    void generatePassengers(const int& nr);
     //-------------------
 
     //----other funcs----

@@ -37,7 +37,7 @@ Airport::~Airport() {
 void Airport::addConnection(const int &conId, Airport *d, double dist) {
     for (auto c : this->connections) {
         if (c.dest == d)
-            return;     //already exists
+            return;     //already existsa
     }
     this->connections.emplace_back(Connection(conId, this, d, dist));
 }

@@ -5,8 +5,11 @@
 #include "passenger.h"
 #include "airport.h"
 
+int Passenger::idcnt = 1;
+
 //----Constructor----
-Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : src(src), dest(dest), plane(plane) {}
+Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : id(idcnt), src(src), dest(dest),
+                                                                  plane(plane) { idcnt++; }
 //-------------------
 
 
@@ -27,5 +30,9 @@ Airport *Passenger::getDestination() const { return this->dest; }
 //------setters------
 void Passenger::setPlane(Plane *plane) {
     this->plane = plane;
+}
+
+bool Passenger::operator==( const Passenger& a) const {
+    return id == a.id;
 }
 //-------------------

@@ -5,14 +5,18 @@
 #include <vector>
 #include <set>
 
+
+#include "passenger.h"
 class Airport;
 
 class Connection;
+
 
 class Graph {
 private:
     std::vector<Airport *> airportSet;    // vertex set
     std::set<int> connectionIds;
+
 public:
     int getAirportNum() const;
 
@@ -26,7 +30,16 @@ public:
 
     bool removeConnection(const int &ida, const int &idb);
 
+
+
+    void updatePassengers();
+
+    void generatePlanes();
+
+    std::vector<int> nearestNeighbour();
+
     bool removeAirport(const int &aid);
+
 
     void viewGraph(const std::string &imgPath) const;
 
