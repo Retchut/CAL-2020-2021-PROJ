@@ -23,8 +23,7 @@ class Plane {
 
 public:
     //----Constructor----
-    Plane(Airport *src, double speed, double currFuel, double maxFuel, std::vector<Passenger *> currPas,
-          unsigned int maxPas, Crew *crew);
+    Plane(Airport *src, double speed, double currFuel, double maxFuel, unsigned int maxPas, Crew *crew);
     //-------------------
 
     //----Destructor-----
@@ -47,15 +46,14 @@ public:
 
     // get passengers
 
-
     unsigned int getMaxPassengers() const;
 
     Crew *getCrew() const;
     //-------------------
 
     //------setters------
-    //add passengers
-    //remove passengers
+    // add passengers
+    // remove passengers
     //-------------------
 
     //----other funcs----

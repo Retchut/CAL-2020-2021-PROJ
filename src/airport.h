@@ -25,7 +25,7 @@ class Airport {
     bool processing;       // auxiliary field used by isDAG
     int indegree;          // auxiliary field used by topsort
     Crew *replCrew;
-    std::set<Passenger> passengers;
+    std::vector<Passenger> passengers;
 
     void addConnection(const int &conId, Airport *d, double dist);
 
@@ -52,7 +52,7 @@ public:
 
     //------setters------
     void setReplacementCrew(Crew *newRepl);
-    void generatePassengers(const int& nr);
+    void generatePassengers(const int &nr, const std::vector<Airport *>& airports);
     void embark(Plane* plane);
     void disembark(Plane* plane);
     //-------------------

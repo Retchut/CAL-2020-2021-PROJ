@@ -4,6 +4,7 @@
 
 #include "connection.h"
 
+
 //----Constructor----
 Airport::Airport(const int &id, const double &latitude, const double &longitude) : id(id), latitude(latitude),
                                                                                    longitude(longitude), visited(false),
@@ -74,6 +75,13 @@ Crew *Airport::getReplacementCrew() { return this->replCrew; }
 //------setters------
 void Airport::setReplacementCrew(Crew *newRepl) {
     this->replCrew = newRepl;
+}
+
+void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& airports) {
+    for(int i = 0; i < rand() % nr; i++){
+        Passenger a = Passenger(this, airports.at(rand()%airports.size()), nullptr);
+        passengers.emplace_back(a);
+    }
 }
 //-------------------
 
