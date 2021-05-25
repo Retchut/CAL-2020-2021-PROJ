@@ -63,7 +63,7 @@ void insertNewConnection(Graph g){
 
 }
 
-bool readInput(Graph g){
+int readInput(Graph g){
     std::cout << "1-Insert Airport\n";
     std::cout << "2-Insert Connection\n";
     std::cout << "3-Close menu and run program\n";
@@ -75,17 +75,17 @@ bool readInput(Graph g){
         std::getline(std::cin,input);
         if(input == "1"){
             insertNewAirport(g);
-            return true;
+            return 1;
         }
         if(input == "2"){
             insertNewConnection(g);
-            return true;
+            return 2;
         }
         if(input == "3"){
-            return true;
+            return 3;
         }
         if(input == "0"){
-            return false;
+            return 0;
         }
     }
 }
@@ -114,17 +114,20 @@ int main() {
     loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
 
     while(true){
-        if(!readInput(g))
+        int input = readInput(g);
+        if(input == 0)
+            return 0;
+        else if(input == 3)
             break;
-
-        int planeToDisplay = getDisplayInput();
-
-        g.generatePassengers(15);
-        g.generatePlanes(2);
-        g.generateReplacementCrews(0);
-        g.calculateSteps();
-        g.viewGraph("", planeToDisplay);
-        std::cout << "Finish" << std::endl;
     }
+    
+    int planeToDisplay = getDisplayInput();
 
+    g.generatePassengers(15);
+    g.generatePlanes(5);
+    g.generateReplacementCrews(0);
+    g.calculateSteps();
+    g.printRoutes();
+    g.viewGraph("", planeToDisplay);
+    return 0;
 }

@@ -7,6 +7,7 @@
 #include "graphviewer.h"
 #include "MutablePriorityQueue.h"
 
+#include <iostream>
 using Node = GraphViewer::Node;
 using Edge = GraphViewer::Edge;
 
@@ -197,8 +198,8 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
     unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
-    //Plane newPlane = Plane(id, findAirport(airportId), speed, consumption/speed, maxFuel, maxPass, nullptr);
-    Plane newPlane = Plane(id, findAirport(1), speed, consumption / speed, maxFuel, maxPass, nullptr,
+    std::cout << "Plane " << id << " | airport " << airportId << "\n";
+    Plane newPlane = Plane(id, findAirport(airportId), speed, consumption / speed, maxFuel, maxPass, nullptr,
                            this->airportSet.size());
     Crew *crew = new Crew(id, &newPlane);
     newPlane.setCrew(crew);
