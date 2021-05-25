@@ -154,6 +154,7 @@ int getPlaneNum(){
     }
 }
 
+/*
 int getRplcNum(){
 
     std::cout << "Please input the number of replacement crews to create (min 0 - disabled replacement).\n";
@@ -174,6 +175,7 @@ int getRplcNum(){
         return 0;
     }
 }
+*/
 
 int getTrackedPlane(int maxPlanes){
 
@@ -195,7 +197,7 @@ int getTrackedPlane(int maxPlanes){
         return id;
     }
     catch (...) {
-        std::cout << "Invalid input. The route of plane 1 will be displayed.\n";
+        std::cout << "Invalid input. The route of plane 0 will be displayed.\n";
         return 0;
     }
 }
@@ -203,45 +205,54 @@ int getTrackedPlane(int maxPlanes){
 int main() {
     std::cout << "-----Welcome to FightNet!-----\n\n";
 
-    while(true){
-        Graph g;
-        switch(drawIberianDataSet()){
-            case 1:
-                loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
-                break;
-            case 2:
-                loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-                break;
-            case 0:
-                return 0;
-        }
-
-        while(true){
-            int input = readInput(g);
-
-            //display graph
-            if(input == 3){
-                break;
-            }
-            //end execution of program
-            else if(input == 0){
-                return 0;
-            }
-            //keep altering the graph
-        }
-
-        int passengerNum = getPassengerNum();
-        int planeNum = getPlaneNum();
-        int replacementNum = getRplcNum();
-        int trackedPlaneID = getTrackedPlane(planeNum);
-
-        g.generatePassengers(passengerNum);
-        g.generatePlanes(planeNum);
-        g.generateReplacementCrews(replacementNum);
-        g.calculateSteps();
-        g.printRoutes();
-        g.viewGraph("", trackedPlaneID);
-        std::cout << "\n";
+    /*
+while(true){
+    Graph g;
+    switch(drawIberianDataSet()){
+        case 1:
+            loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+            break;
+        case 2:
+            loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+            break;
+        case 0:
+            return 0;
     }
 
+    while(true){
+        int input = readInput(g);
+
+        //display graph
+        if(input == 3){
+            break;
+        }
+        //end execution of program
+        else if(input == 0){
+            return 0;
+        }
+        //keep altering the graph
+    }
+    int passengerNum = getPassengerNum();
+    int planeNum = getPlaneNum();
+    //int replacementNum = getRplcNum();
+    int trackedPlaneID = getTrackedPlane(planeNum);
+
+    g.generatePassengers(passengerNum);
+    g.generatePlanes(planeNum);
+    g.generateReplacementCrews();
+    g.calculateSteps();
+    g.printRoutes();
+    //g.viewGraph("", trackedPlaneID);
+    std::cout << "\n";
+}
+     */
+    Graph g;
+    loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+    //loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+
+    g.generatePassengers(1);
+    g.generatePlanes(1);
+    g.generateReplacementCrews();
+    g.calculateSteps();
+    g.printRoutes();
 }

@@ -102,10 +102,13 @@ double Plane::calculateConsumption(const Connection &c) const {
 }
 
 bool Plane::canMoveThrough(const Connection &c) const {
-    //TODO: weather makes us return false, prob
+    //TODO: weather makes us return false
     if (!c.getDestination()->getAccessibility())
         return false;
 
+    double h = this->getCrew()->getHours();
+    double s = this->getSpeed();
+    double dist = c.getDistance();
     if (this->getCrew()->getHours() * this->speed < c.getDistance())
         return false;
 
@@ -152,7 +155,10 @@ Connection *Plane::calculateBestConnection() {
 }
 
 void Plane::nextStep() {
+    std::cout << this->visited.size() << "\n";
     Connection *c = calculateBestConnection();
+    if(c == NULL)
+        return;
     if(c->getDestination() == src)
         arrived = true;
     traverseEdge(c);

@@ -39,7 +39,7 @@ public:
 
     void generatePassengers(const int& maxNr);
 
-    void generateReplacementCrews(size_t restingNum);
+    void generateReplacementCrews();
 
     void generatePlanes(size_t planeNum);
 
