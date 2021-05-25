@@ -247,8 +247,8 @@ while(true){
 }
      */
     Graph g;
-    loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-    //loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+    //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+    loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
 
     g.generatePassengers(1);
     g.generatePlanes(1);

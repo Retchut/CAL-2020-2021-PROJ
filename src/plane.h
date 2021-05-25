@@ -71,6 +71,8 @@ public:
 
     bool canMoveThrough(const Connection &c) const;
 
+    bool hasVisited(const Connection &c) const;
+
     void replaceCrew();
 
     void traverseEdge(Connection *toTraverse);
@@ -81,7 +83,7 @@ public:
 
     Connection* calculateBestConnection();
 
-    void nextStep();
+    bool nextStep();
 
     void printRoute();
 
