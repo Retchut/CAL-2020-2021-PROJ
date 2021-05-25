@@ -161,6 +161,7 @@ void Plane::nextStep() {
 }
 
 void Plane::printRoute(){
+    std::cout << "Plane " << this->id << ": ";
     for(int i = 0; i < this->visited.size(); i++){
         std::cout << this->visited[i]->getId() << " ";
     }

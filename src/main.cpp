@@ -76,9 +76,11 @@ bool readInput(Graph g){
     while(true){
         std::getline(std::cin,input);
         if(input == "1"){
+            return true;
             insertNewAirport(g);
         }
         if(input == "2"){
+            return true;
             insertNewConnection(g);
         }
         if(input == "3"){
@@ -94,26 +96,35 @@ int main() {
     Graph g;
     //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
     loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
-    /*
-    while(true){
 
+    while(true){
+        /*
         if(!readInput(g))
             break;
+        */
+        bool test = readInput(g);
+        std::cout << "bool was " << test << "\n";
+        if(!test)
+            break;
 
+/*
         g.generatePassengers(15);
         g.generatePlanes(2);
         g.generateReplacementCrews(0);
         g.calculateSteps();
         g.viewGraph("");
         std::cout << "Finish" << std::endl;
+        */
     }
-    */
 
+    /*
     g.generatePassengers(15);
-    g.generatePlanes(1);
+    g.generatePlanes(2);
     g.generateReplacementCrews(0);
     g.calculateSteps();
+    g.printRoutes();
     g.viewGraph("");
     std::cout << "Finish" << std::endl;
+    */
 
 }

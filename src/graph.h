@@ -45,6 +45,8 @@ public:
 
     void calculateSteps();
 
+    void printRoutes();
+
     void cycleUsingDjiskstra(Plane* plane, Airport* origin);
 
     bool removeAirport(const int &aid);

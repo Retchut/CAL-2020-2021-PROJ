@@ -104,7 +104,10 @@ bool Graph::removeAirport(const int &id) {
 
 Graph::~Graph() {
     for (Airport *airport : airportSet) {
-        delete airport;
+        if (airport != nullptr){
+            delete airport;
+            airport = nullptr;
+        }
     }
 }
 
@@ -150,23 +153,31 @@ void Graph::viewGraph(const std::string &imgPath) const {
         static const Color DARK_GRAY ;
      */
 
-    /*
+
     //This breaks if we display more than one equal edge
-    GraphViewer::Color colors[13] = {GraphViewer::BLACK, GraphViewer::WHITE, GraphViewer::RED, GraphViewer::GREEN,
+    GraphViewer::Color colors[12] = {GraphViewer::BLACK, GraphViewer::RED, GraphViewer::GREEN,
                                     GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
                                     GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
                                     GraphViewer::DARK_GRAY};
+    size_t availableID = connectionIds.size() + 1;
+    std::vector<size_t> usedIDs;
     for (size_t i = 0; i < planeSet.size(); i++) {
-        auto color = colors[i%13];
+        auto color = colors[i%12];
         for (auto connection : planeSet[i].getRoute()) {
+            unsigned int id = connection->getId();
+            if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
+                id = availableID;
+                availableID++;
+            }
             Edge &edge =
-                    gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
+                    gv.addEdge(id, gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
                                GraphViewer::Edge::EdgeType::DIRECTED);
             edge.setColor(color);
+            usedIDs.push_back(connection->getId());
         }
     }
-    */
 
+/*
     for (auto connection : planeSet[0].getRoute()) {
         Edge &edge =
                 gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
@@ -174,6 +185,7 @@ void Graph::viewGraph(const std::string &imgPath) const {
         edge.setColor(GraphViewer::BLACK);
     }
 
+    */
     gv.join();
 }
 
@@ -225,7 +237,6 @@ void Graph::generatePlanes(size_t planeNum) {
 void Graph::calculateSteps() {
     unsigned long planes = planeSet.size();
     while (planes > 0) {
-
         for (Plane &p : planeSet) {
             if (!p.hasArrived()) {
                 p.nextStep();
@@ -233,11 +244,12 @@ void Graph::calculateSteps() {
                 planes--;
             }
         }
+    }
+}
 
-
-        for (auto p : planeSet) {
-            p.printRoute();
-        }
+void Graph::printRoutes(){
+    for(auto p : planeSet){
+        p.printRoute();
     }
 }
 
