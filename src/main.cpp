@@ -188,7 +188,7 @@ int getTrackedPlane(int maxPlanes){
             std::cout << "That amount is too low. The route of plane 0 will be displayed.\n";
             return 0;
         }
-        else if(id > maxPlanes){
+        else if(id > (maxPlanes - 1)){
             std::cout << "That id does not exist. The route of plane 0 will be displayed.\n";
             return 0;
         }
@@ -241,6 +241,7 @@ int main() {
         g.calculateSteps();
         g.printRoutes();
         g.viewGraph("", trackedPlaneID);
+        std::cout << "\n";
     }
 
 }

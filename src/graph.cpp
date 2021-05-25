@@ -126,7 +126,12 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     for (auto airport : airportSet) {
         Node &node0 = gv.addNode(airport->id,
                                  sf::Vector2f(airport->longitude * 10 + 800, (-airport->latitude * 10) + 4025));
-        node0.setColor(GraphViewer::BLUE);
+        if(airport == planeSet[planeID].getSourceAirport()){
+            node0.setColor(GraphViewer::RED);
+        }
+        else{
+            node0.setColor(GraphViewer::BLUE);
+        }
     }
 
     /*
@@ -198,7 +203,6 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
     unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
-    std::cout << "Plane " << id << " | airport " << airportId << "\n";
     Plane newPlane = Plane(id, findAirport(airportId), speed, consumption / speed, maxFuel, maxPass, nullptr,
                            this->airportSet.size());
     Crew *crew = new Crew(id, &newPlane);
