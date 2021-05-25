@@ -109,10 +109,11 @@ int getDisplayInput(){
 
 int main() {
     std::cout << "-----Welcome to FightNet!-----\n\n";
+    Graph g;
+    //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+    loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+
     while(true){
-        Graph g;
-        //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-        loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
         if(!readInput(g))
             break;
 

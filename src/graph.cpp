@@ -141,6 +141,31 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     }
     */
 
+    /*
+    //Display ALL planes' routes, in different colors
+    GraphViewer::Color colors[12] = {GraphViewer::BLACK, GraphViewer::RED, GraphViewer::GREEN,
+                                     GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
+                                     GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
+                                     GraphViewer::DARK_GRAY};
+    size_t availableID = connectionIds.size() + 1;
+    std::vector<size_t> usedIDs;
+    for (size_t i = 0; i < planeSet.size(); i++) {
+        auto color = colors[i%12];
+        for (auto connection : planeSet[i].getRoute()) {
+            unsigned int id = connection->getId();
+            if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
+                id = availableID;
+                availableID++;
+            }
+            Edge &edge =
+                    gv.addEdge(id, gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
+                               GraphViewer::Edge::EdgeType::DIRECTED);
+            edge.setColor(color);
+            usedIDs.push_back(connection->getId());
+        }
+    }
+     */
+
     //Display a plane's route
     for (auto connection : planeSet[planeID].getRoute()) {
         Edge &edge =
