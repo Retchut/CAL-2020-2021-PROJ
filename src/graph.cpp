@@ -103,15 +103,18 @@ bool Graph::removeAirport(const int &id) {
 }
 
 Graph::~Graph() {
-    for (Airport *airport : airportSet) {
-        if (airport != nullptr){
-            delete airport;
-            airport = nullptr;
+    /*
+    int c = 0;
+    for (auto a : airportSet) {
+        if (a != nullptr){
+            delete a;
+            a = nullptr;
         }
-    }
+        c++;
+    }*/
 }
 
-void Graph::viewGraph(const std::string &imgPath) const {
+void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     GraphViewer gv;
 
     gv.setCenter(sf::Vector2f(0, 0));
@@ -137,55 +140,15 @@ void Graph::viewGraph(const std::string &imgPath) const {
         }
     }
     */
-    /*
-     *  static const Color BLACK     ;
-        static const Color WHITE     ;
-        static const Color RED       ;
-        static const Color GREEN     ;
-        static const Color BLUE      ;
-        static const Color YELLOW    ;
-        static const Color MAGENTA   ;
-        static const Color CYAN      ;
-        static const Color PINK      ;
-        static const Color ORANGE    ;
-        static const Color GRAY      ;
-        static const Color LIGHT_GRAY;
-        static const Color DARK_GRAY ;
-     */
 
-
-    //This breaks if we display more than one equal edge
-    GraphViewer::Color colors[12] = {GraphViewer::BLACK, GraphViewer::RED, GraphViewer::GREEN,
-                                    GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
-                                    GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
-                                    GraphViewer::DARK_GRAY};
-    size_t availableID = connectionIds.size() + 1;
-    std::vector<size_t> usedIDs;
-    for (size_t i = 0; i < planeSet.size(); i++) {
-        auto color = colors[i%12];
-        for (auto connection : planeSet[i].getRoute()) {
-            unsigned int id = connection->getId();
-            if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
-                id = availableID;
-                availableID++;
-            }
-            Edge &edge =
-                    gv.addEdge(id, gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
-                               GraphViewer::Edge::EdgeType::DIRECTED);
-            edge.setColor(color);
-            usedIDs.push_back(connection->getId());
-        }
-    }
-
-/*
-    for (auto connection : planeSet[0].getRoute()) {
+    //Display a plane's route
+    for (auto connection : planeSet[planeID].getRoute()) {
         Edge &edge =
                 gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
                            GraphViewer::Edge::EdgeType::DIRECTED);
         edge.setColor(GraphViewer::BLACK);
     }
 
-    */
     gv.join();
 }
 

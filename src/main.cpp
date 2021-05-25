@@ -64,24 +64,22 @@ void insertNewConnection(Graph g){
 }
 
 bool readInput(Graph g){
-    std::cout << "-----Welcome to FightNet!-----\n\n";
-
     std::cout << "1-Insert Airport\n";
     std::cout << "2-Insert Connection\n";
     std::cout << "3-Close menu and run program\n";
     std::cout << "0-Close the program\n";
 
-    std::string input = "";
+    std::string input;
 
     while(true){
         std::getline(std::cin,input);
         if(input == "1"){
-            return true;
             insertNewAirport(g);
+            return true;
         }
         if(input == "2"){
-            return true;
             insertNewConnection(g);
+            return true;
         }
         if(input == "3"){
             return true;
@@ -92,39 +90,40 @@ bool readInput(Graph g){
     }
 }
 
-int main() {
-    Graph g;
-    //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-    loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+int getDisplayInput(){
 
+    std::cout << "Please insert the ID of the plane whose route you'd like to display on the graph viewer.\n";
+    int id = 0;
+    std::string input;
+    std::string::size_type sz;
+    std::getline(std::cin, input);
+    try{
+        id = std::stoi(input, &sz);
+        return id;
+    }
+    catch (...) {
+        std::cout << "Invalid input. The route of plane 1 will be displayed.";
+        return 1;
+    }
+}
+
+int main() {
+    std::cout << "-----Welcome to FightNet!-----\n\n";
     while(true){
-        /*
+        Graph g;
+        //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+        loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
         if(!readInput(g))
             break;
-        */
-        bool test = readInput(g);
-        std::cout << "bool was " << test << "\n";
-        if(!test)
-            break;
 
-/*
+        int planeToDisplay = getDisplayInput();
+
         g.generatePassengers(15);
         g.generatePlanes(2);
         g.generateReplacementCrews(0);
         g.calculateSteps();
-        g.viewGraph("");
+        g.viewGraph("", planeToDisplay);
         std::cout << "Finish" << std::endl;
-        */
     }
-
-    /*
-    g.generatePassengers(15);
-    g.generatePlanes(2);
-    g.generateReplacementCrews(0);
-    g.calculateSteps();
-    g.printRoutes();
-    g.viewGraph("");
-    std::cout << "Finish" << std::endl;
-    */
 
 }

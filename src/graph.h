@@ -52,7 +52,7 @@ public:
     bool removeAirport(const int &aid);
 
 
-    void viewGraph(const std::string &imgPath) const;
+    void viewGraph(const std::string &imgPath, int planeToDisplay) const;
 
     virtual ~Graph();
 };

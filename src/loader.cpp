@@ -21,8 +21,10 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
     std::ifstream fileB;
     std::string rowA, rowB;
     int rowsToReadA = 0, rowsToReadB = 0;
+    /*
     std::cout << "Reading data from: " << directory + prefix + "node_coords" + suffix << std::endl;
     std::cout << "Reading data from: " << directory + prefix + "node_names" + suffix << std::endl;
+    */
 
     fileA.open(directory + prefix + "node_coords" + suffix, std::ios::in);
     fileB.open(directory + prefix + "node_names" + suffix, std::ios::in);
@@ -80,8 +82,10 @@ int loader(Graph &graph, const std::string &directory, const std::string &prefix
 
 
     // Load connections
+    /*
     std::cout << "Reading data from: " << directory + prefix + "edges" + suffix << std::endl;
     std::cout << "Reading data from: " << directory + prefix + "edge_weights" + suffix << std::endl;
+    */
     fileA.open(directory + prefix + "edges" + suffix, std::ios::in);
     fileB.open(directory + prefix + "edge_weights" + suffix, std::ios::in);
     if (!fileA.is_open()) {
