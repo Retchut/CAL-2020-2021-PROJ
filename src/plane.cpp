@@ -68,6 +68,10 @@ Crew *Plane::getCrew() const { return this->crew; }
 void Plane::setCrew(Crew* newCrew) {
     this->crew = newCrew;
 }
+
+void Plane::setArrived(bool val) {
+    this->arrived = val;
+}
 //-------------------
 
 
@@ -96,6 +100,10 @@ void Plane::updateCrew() {
     }
 }
 
+void Plane::dropOffPassengers() {
+    this->curr->disembark(this);
+}
+
 double Plane::calculateConsumption(const Connection &c) const {
     double dist = c.getDistance();
     return fuelConsump * dist;
@@ -112,15 +120,12 @@ bool Plane::canMoveThrough(const Connection &c) const {
     if (this->getCrew()->getHours() * this->speed < c.getDistance())
         return false;
 
-    return calculateConsumption(c) <= this->maxFuel;
-}
-
-bool Plane::hasVisited(const Connection &c) const{
     for(Airport* visit : visited){
         if (visit->getId() == c.getDestination()->getId())
-            return true;
+            return false;
     }
-    return false;
+
+    return calculateConsumption(c) <= this->maxFuel;
 }
 
 Connection *Plane::calculateBestConnection() {
@@ -136,7 +141,7 @@ Connection *Plane::calculateBestConnection() {
     //finds route the plane can move through and hasn't traversed
     for (auto& c : *this->curr->getConnections()) {
         double val = 0.0;
-        if (canMoveThrough(c) && !hasVisited(c)) {
+        if (canMoveThrough(c)) {
             if (!this->currPas.empty()) {
                 for (const auto &pas : this->currPas) {
                     if (pas.getDestination() == c.getDestination())
@@ -150,25 +155,6 @@ Connection *Plane::calculateBestConnection() {
         }
     }
 
-    //allow backtracking
-    //only checks if the player can traverse a route
-    if(vals.empty()){
-        for (auto& c : *this->curr->getConnections()) {
-            double val = 0.0;
-            if (canMoveThrough(c)) {
-                if (!this->currPas.empty()) {
-                    for (const auto &pas : this->currPas) {
-                        if (pas.getDestination() == c.getDestination())
-                            val += 1;
-                    }
-                    val = 0.6 * (val / this->currPas.size()) + 0.4 * (0.4 / (c.getDistance() / 100));
-                } else {
-                    val = 1 / c.getDistance();
-                }
-                vals.emplace_back(std::make_pair(&c, val));
-            }
-        }
-    }
     //descending
     std::sort(vals.begin(), vals.end(), [](std::pair<Connection *, double> a, std::pair<Connection *, double> b) {
         return a.second > b.second;
@@ -177,14 +163,20 @@ Connection *Plane::calculateBestConnection() {
 }
 
 bool Plane::nextStep() {
-    std::cout << this->visited[this->visited.size() - 1]->getId() << "\n";
+    std::cout << this->visited[this->visited.size() - 1]->getId() << "\n";  //debug print
     Connection *c = calculateBestConnection();
+    //if we can't move directly anywhere, we use djkstra
     if(c == nullptr)
         return false;
     traverseEdge(c);
     visitAirport(c->getDestination());
-    if(c->getDestination() == src)
+
+    //if we could move directly to the plane's source node
+    if(c->getDestination() == src){
         arrived = true;
+        this->dropOffPassengers();
+    }
+    //if we moved elsewhere
     else
         curr->updatePassengers(this);
     return true;

@@ -106,6 +106,10 @@ void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& ai
 //----other funcs----
 //-------------------
 
+void Airport::embark(Plane *plane) {
+    //TODO
+}
+
 void Airport::embark(Plane *plane, Passenger passenger) {
     if(plane->addPassenger(passenger)){
         for(auto it = this->passengers.begin(); it != this->passengers.end();it++){
@@ -114,6 +118,12 @@ void Airport::embark(Plane *plane, Passenger passenger) {
                 return;
             }
         }
+    }
+}
+
+void Airport::disembark(Plane *plane) {
+    for(auto pass : plane->getCurrentPassengers()){
+        disembark(plane, pass);
     }
 }
 

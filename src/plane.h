@@ -62,6 +62,7 @@ public:
 
     //------setters------
     void setCrew(Crew* newCrew);
+    void setArrived(bool val);
     // add passengers
     // remove passengers
     //-------------------
@@ -80,6 +81,8 @@ public:
     void visitAirport(Airport *next);
 
     void updateCrew();
+
+    void dropOffPassengers();
 
     Connection* calculateBestConnection();
 

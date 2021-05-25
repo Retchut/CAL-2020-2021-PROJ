@@ -126,7 +126,7 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     for (auto airport : airportSet) {
         Node &node0 = gv.addNode(airport->id,
                                  sf::Vector2f(airport->longitude * 10 + 800, (-airport->latitude * 10) + 4025));
-        if(airport == planeSet[planeID].getSourceAirport()){
+        if(airport == planeSet[planeID].getSourceAirport() && planeID != -1){
             node0.setColor(GraphViewer::RED);
         }
         else{
@@ -147,37 +147,37 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     }
     */
 
-    /*
     //Display ALL planes' routes, in different colors
-    GraphViewer::Color colors[12] = {GraphViewer::BLACK, GraphViewer::RED, GraphViewer::GREEN,
-                                     GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
-                                     GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
-                                     GraphViewer::DARK_GRAY};
-    size_t availableID = connectionIds.size() + 1;
-    std::vector<size_t> usedIDs;
-    for (size_t i = 0; i < planeSet.size(); i++) {
-        auto color = colors[i%12];
-        for (auto connection : planeSet[i].getRoute()) {
-            unsigned int id = connection->getId();
-            if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
-                id = availableID;
-                availableID++;
+    if(planeID == -1){
+        GraphViewer::Color colors[12] = {GraphViewer::BLACK, GraphViewer::RED, GraphViewer::GREEN,
+                                         GraphViewer::BLUE, GraphViewer::YELLOW, GraphViewer::MAGENTA, GraphViewer::CYAN,
+                                         GraphViewer::PINK, GraphViewer::ORANGE, GraphViewer::GRAY, GraphViewer::LIGHT_GRAY,
+                                         GraphViewer::DARK_GRAY};
+        size_t availableID = connectionIds.size() + 1;
+        std::vector<size_t> usedIDs;
+        for (size_t i = 0; i < planeSet.size(); i++) {
+            auto color = colors[i%12];
+            for (auto connection : planeSet[i].getRoute()) {
+                unsigned int id = connection->getId();
+                if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
+                    id = availableID;
+                    availableID++;
+                }
+                Edge &edge =
+                        gv.addEdge(id, gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
+                                   GraphViewer::Edge::EdgeType::DIRECTED);
+                edge.setColor(color);
+                usedIDs.push_back(connection->getId());
             }
-            Edge &edge =
-                    gv.addEdge(id, gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
-                               GraphViewer::Edge::EdgeType::DIRECTED);
-            edge.setColor(color);
-            usedIDs.push_back(connection->getId());
         }
     }
-     */
-
-    //Display a plane's route
-    for (auto connection : planeSet[planeID].getRoute()) {
-        Edge &edge =
-                gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
-                           GraphViewer::Edge::EdgeType::DIRECTED);
-        edge.setColor(GraphViewer::BLACK);
+    else{//Display the selected plane's route
+        for (auto connection : planeSet[planeID].getRoute()) {
+            Edge &edge =
+                    gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
+                               GraphViewer::Edge::EdgeType::DIRECTED);
+            edge.setColor(GraphViewer::BLACK);
+        }
     }
 
     gv.join();
@@ -237,7 +237,16 @@ void Graph::calculateSteps() {
     while (planes > 0) {
         for (Plane &p : planeSet) {
             if (!p.hasArrived()) {
-                p.nextStep();
+                //if the plane can't move anywhere, it returns to the origin node using Dijkstra's pathfinding algorithn
+                if(!p.nextStep()){
+                    //TODO
+                    //Dijkstra(plane *, plane->current)
+                    // returns nodes to travel through to get from current to the origin
+                    //  create a new function to move through those nodes
+                    //  move
+                    p.setArrived(true);
+                    planes--;
+                }
             } else {
                 planes--;
             }
@@ -252,7 +261,7 @@ void Graph::printRoutes(){
 }
 
 
-void Graph::cycleUsingDjiskstra(Plane *plane, Airport *origin) {
+void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
     struct edge {
         Connection *connection;
         bool visited = false;

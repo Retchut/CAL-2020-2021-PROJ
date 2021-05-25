@@ -47,7 +47,7 @@ public:
 
     void printRoutes();
 
-    void cycleUsingDjiskstra(Plane* plane, Airport* origin);
+    void cycleUsingDijkstra(Plane* plane, Airport* origin);
 
     bool removeAirport(const int &aid);
 
