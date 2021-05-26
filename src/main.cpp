@@ -279,7 +279,11 @@ int main() {
     std::vector<Connection> p2c = *p1.getCurrentAirport()->getConnections();
     Connection *BtoCid4 = &p2c[1];
     p1.movePlane(BtoCid4);
-    g.cycleUsingDijkstra(&p1, p1.getSourceAirport());
-    std::cout << "idk\n";
 
+    //C to D
+    std::vector<Connection> p3c = *p1.getCurrentAirport()->getConnections();
+    Connection *CtoDid4 = &p3c[2];
+    p1.movePlane(CtoDid4);
+
+    g.cycleUsingDijkstra(&p1, p1.getSourceAirport());
 }

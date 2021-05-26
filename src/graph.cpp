@@ -265,35 +265,40 @@ void Graph::printRoutes(){
     }
 }
 
+void Graph::moveAirplaneThroughPath(Plane *plane, std::vector<Connection *> path){
+    for(Connection *c : path){
+        plane->movePlane(c);
+    }
+}
 
 void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
-    struct edge {
+    struct auxEdge {
         Connection *connection;
         bool visited = false;
     };
 
-    struct node {
+    struct auxNode {
         Airport* airport;
-        std::vector<struct edge> edges;
+        std::vector<struct auxEdge> edges;
         bool visited;
-        struct node *via;
+        struct auxNode *via;
         double distance;
         int queueIndex = 0;
 
-        bool operator<(const struct node &a) const { return distance < a.distance; }
+        bool operator<(const struct auxNode &a) const { return distance < a.distance; }
     };
 
 
-    std::vector<struct node> nodes;
+    std::vector<struct auxNode> nodes;
     for (auto airport : airportSet) {
-        struct node a{};
+        struct auxNode a{};
         a.airport = airport;
         a.visited = false;
         a.via = nullptr;
         a.queueIndex = 0;
         a.distance = std::numeric_limits<double>::max();
-        for (auto connection : *airport->getConnections()) {
-            struct edge b;
+        for (auto &connection : *airport->getConnections()) {
+            struct auxEdge b;
             b.connection = &connection;
             b.visited = false;
             a.edges.emplace_back(b);
@@ -301,24 +306,25 @@ void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
         nodes.emplace_back(a);
     }
 
-    MutablePriorityQueue<struct node> airportsToVisit;
-
-    struct node *origAirport;
-    origAirport = &nodes.at(0);
-    for (auto node : nodes) {
-        if (node.airport->getPassengers().size() > origAirport->airport->getPassengers().size())
+    struct auxNode *origAirport;
+    for(auxNode &node : nodes){
+        if(node.airport == plane->getCurrentAirport()){
             origAirport = &node;
+            origAirport->distance = 0.0;
+            break;
+        }
     }
-    origAirport->distance = 0.0;
+
+    MutablePriorityQueue<struct auxNode> airportsToVisit;
 
     airportsToVisit.insert(origAirport);
 
     while (!airportsToVisit.empty()) {
-        struct node *current = airportsToVisit.extractMin();
+        struct auxNode *current = airportsToVisit.extractMin();
         if (!current->visited) {
             current->visited = true;
-            for (struct edge& edge : current->edges) {
-                struct node *a = &*std::find_if(nodes.begin(), nodes.end(), [&edge](const struct node &a) {
+            for (struct auxEdge& edge : current->edges) {
+                struct auxNode *a = &*std::find_if(nodes.begin(), nodes.end(), [&edge](const struct auxNode &a) {
                     return a.airport == edge.connection->getDestination();
                 });
 
@@ -337,5 +343,22 @@ void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
             }
         }
     }
-    std::cout << "end\n";
+
+    std::vector<Connection *> path = {};
+    auxNode *curr = &*std::find_if(nodes.begin(), nodes.end(), [&origin](auxNode &node){
+        return node.airport == origin;
+    });
+    while(curr->via != nullptr){
+        auxNode *prev = curr->via;
+        for(auto &edge : prev->edges){
+            if(edge.connection->getDestination() == curr->airport){
+                path.insert(path.begin(), edge.connection);
+                break;
+            }
+        }
+        curr = prev;
+    }
+
+    moveAirplaneThroughPath(plane, path);
+    plane->printRoute();
 }

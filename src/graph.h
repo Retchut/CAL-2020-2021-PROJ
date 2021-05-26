@@ -48,10 +48,11 @@ public:
 
     void printRoutes();
 
+    void moveAirplaneThroughPath(Plane *plane, std::vector<Connection *> path);
+
     void cycleUsingDijkstra(Plane* plane, Airport* origin);
 
     bool removeAirport(const int &aid);
-
 
     void viewGraph(const std::string &imgPath, int planeToDisplay) const;
 
