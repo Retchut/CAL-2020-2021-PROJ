@@ -86,7 +86,7 @@ bool Plane::canReplaceCrew() {
 
 void Plane::traverseEdge(Connection *toTraverse){
     this->route.push_back(toTraverse);
-    //this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
+    this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
 }
 
 void Plane::visitAirport(Airport *next) {
