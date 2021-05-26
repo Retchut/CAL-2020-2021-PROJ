@@ -14,7 +14,6 @@ class Passenger {
     Airport *src;
     Airport *dest;
     Plane *plane;
-    //identifying data?
 
 public:
     //----Constructor----

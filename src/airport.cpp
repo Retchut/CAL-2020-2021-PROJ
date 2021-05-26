@@ -1,7 +1,5 @@
 #include "airport.h"
 
-#include <utility>
-
 #include "connection.h"
 
 
@@ -38,7 +36,7 @@ Airport::~Airport() {
 void Airport::addConnection(const int &conId, Airport *d, double dist) {
     for (auto c : this->connections) {
         if (c.dest == d)
-            return;     //already existsa
+            return;     //already exists
     }
     this->connections.emplace_back(Connection(conId, this, d, dist));
 }
@@ -73,13 +71,13 @@ std::vector<Connection> *Airport::getConnections() { return &this->connections; 
 
 Crew* Airport::getReplacementCrew() { return this->replCrew; }
 
-int Airport::getId() {return this->id;}
+int Airport::getId() const {return this->id;}
 
-bool Airport::getAccessibility() {
+bool Airport::getAccessibility() const {
     return accessible;
 }
 
-std::vector<Passenger> Airport::getPassengers() const {
+std::vector<Passenger *> Airport::getPassengers() const {
     return passengers;
 }
 //-------------------
@@ -97,7 +95,7 @@ void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& ai
             i--;
             continue;
         }
-        Passenger a = Passenger(this, dest, nullptr);
+        Passenger *a = new Passenger(this, dest, nullptr);
         passengers.emplace_back(a);
     }
 }
@@ -106,41 +104,56 @@ void Airport::generatePassengers(const int &nr, const std::vector<Airport *>& ai
 //----other funcs----
 //-------------------
 
-void Airport::embark(Plane *plane) {
-    //TODO
-}
-
-void Airport::embark(Plane *plane, Passenger passenger) {
+bool Airport::embark(Plane *plane, Passenger *passenger) {
     if(plane->addPassenger(passenger)){
         for(auto it = this->passengers.begin(); it != this->passengers.end();it++){
             if(*it == passenger){
                 this->passengers.erase(it);
-                return;
+                return true;
             }
         }
     }
+    return false;
 }
 
 void Airport::disembark(Plane *plane) {
-    for(auto pass : plane->getCurrentPassengers()){
+    for(auto pass : *(plane->getCurrentPassengers())){
         disembark(plane, pass);
     }
 }
 
-void Airport::disembark(Plane *plane, Passenger passenger) {
-    if(plane->removePassenger(passenger) && passenger.getDestination()->getId() != this->id)
-        this->passengers.push_back(passenger);
+void Airport::disembark(Plane *plane, Passenger *passenger) {
+    if(plane->removePassenger(passenger)){
+        if(passenger->getDestination()->getId() != this->id)
+            this->passengers.push_back(passenger);
+        //else
+        //    delete passenger;
+    }
+}
+
+void Airport::addPassenger(Passenger *toAdd){
+    this->passengers.push_back(toAdd);
 }
 
 void Airport::updatePassengers(Plane *plane) {
-    for(auto pas : plane->getCurrentPassengers()){
-        if(pas.getDestination() == this) {
-            disembark(plane, pas);
+    auto it = (*plane->getCurrentPassengers()).begin();
+    while(it != (*plane->getCurrentPassengers()).end()){
+        Passenger *pas = (*it);
+        Passenger test = *pas;
+        if(pas->getDestination() == this){
+            (*it)->setPlane(nullptr);
+            it = (*plane->getCurrentPassengers()).erase(it);
+        }
+        else{
+            ++it;
         }
     }
 
-    for(auto pas : passengers){
-        embark(plane, pas);
+    while(!passengers.empty()){
+        //embark as many passengers as we can
+        if(!embark(plane, passengers[0])){
+            break;
+        }
     }
 }
 

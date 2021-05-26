@@ -250,19 +250,18 @@ int main() {
         std::cout << "\n";
     }
      */
-    /*
     Graph g;
     //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
     loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
 
-    g.generatePassengers(1);
-    g.generatePlanes(1);
+    g.generatePassengers(10);
+    g.generatePlanes(6);
     g.generateReplacementCrews();
     g.calculateSteps();
     g.printRoutes();
-    g.viewGraph("", 0);
-    */
+    //g.viewGraph("", 0);
 
+    /*
     //Test dijkstra
     Graph g;
     loader(g, "../airports_datasets/dijkstra_test/", "", ".txt");
@@ -286,4 +285,5 @@ int main() {
     p1.movePlane(CtoDid4);
 
     g.cycleUsingDijkstra(&p1, p1.getSourceAirport());
+    */
 }

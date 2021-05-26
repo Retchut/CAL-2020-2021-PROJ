@@ -17,15 +17,12 @@ class Airport {
     //location
     std::string name;
     double latitude, longitude;
-    //weather
+    //weather   -   not implemented
     std::string weather;
-    //visited -> this is probably getting removed (mário)
     std::vector<Connection> connections;  // list of outgoing edges
-    bool visited;          // auxiliary field used by dfs and bfs
     bool processing;       // auxiliary field used by isDAG
-    int indegree;          // auxiliary field used by topsort
     Crew *replCrew;
-    std::vector<Passenger> passengers;
+    std::vector<Passenger *> passengers;
     bool accessible = true;
 
     void addConnection(const int &conId, Airport *d, double dist);
@@ -50,9 +47,9 @@ public:
     //------getters------
     std::vector<Connection> *getConnections();
     Crew* getReplacementCrew();
-    std::vector<Passenger> getPassengers() const;
-    int getId();
-    bool getAccessibility();
+    std::vector<Passenger *> getPassengers() const;
+    int getId() const;
+    bool getAccessibility() const;
     //-------------------
 
     //------setters------
@@ -61,10 +58,10 @@ public:
     //-------------------
 
     //----other funcs----
-    void embark(Plane* plane);
     void disembark(Plane* plane);
-    void embark(Plane* plane, Passenger passenger);
-    void disembark(Plane* plane, Passenger passenger);
+    bool embark(Plane* plane, Passenger *passenger);
+    void disembark(Plane* plane, Passenger *passenger);
+    void addPassenger(Passenger *toAdd);
     void updatePassengers(Plane* plane);
     bool hasReplacementCrew();
     //-------------------

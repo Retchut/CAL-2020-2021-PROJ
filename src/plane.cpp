@@ -56,7 +56,7 @@ bool Plane::hasArrived() const { return arrived; }
 
 double Plane::getMaxFuel() const { return this->maxFuel; }
 
-std::vector<Passenger> Plane::getCurrentPassengers() const { return this->currPas; }
+std::vector<Passenger *> *Plane::getCurrentPassengers() { return &this->currPas; }
 
 unsigned int Plane::getMaxPassengers() const { return this->maxPas; }
 
@@ -69,8 +69,9 @@ void Plane::setCrew(Crew* newCrew) {
     this->crew = newCrew;
 }
 
-void Plane::setArrived(bool val) {
+void Plane::setArrived(bool val, unsigned int &activePlanes) {
     this->arrived = val;
+    activePlanes--;
 }
 //-------------------
 
@@ -101,7 +102,11 @@ void Plane::updateCrew() {
 }
 
 void Plane::dropOffPassengers() {
-    this->curr->disembark(this);
+    auto it = currPas.begin();
+    while(it != currPas.end()){
+        this->curr->addPassenger((*it));
+        it = this->currPas.erase(it);
+    }
 }
 
 double Plane::calculateConsumption(const Connection &c) const {
@@ -145,7 +150,7 @@ Connection *Plane::calculateBestConnection() {
         if (canMoveThrough(c)) {
             if (!this->currPas.empty()) {
                 for (const auto &pas : this->currPas) {
-                    if (pas.getDestination() == c.getDestination())
+                    if (pas->getDestination() == c.getDestination())
                         val += 1;
                 }
                 val = 0.6 * (val / this->currPas.size()) + 0.4 * (0.4 / (c.getDistance() / 100));
@@ -168,8 +173,7 @@ void Plane::movePlane(Connection *toTraverse){
     this->visitAirport(toTraverse->getDestination());
 }
 
-bool Plane::nextStep() {
-    std::cout << this->visited[this->visited.size() - 1]->getId() << "\n";  //debug print
+bool Plane::nextStep(unsigned int &activePlanes) {
     Connection *c = calculateBestConnection();
 
     //if we can't directly move anywhere, we use dijkstra to return to the origin
@@ -180,7 +184,7 @@ bool Plane::nextStep() {
 
     //if we could move directly to the plane's source node
     if(c->getDestination() == src){
-        arrived = true;
+        setArrived(true, activePlanes);
         this->dropOffPassengers();
     }
     //if we moved elsewhere
@@ -200,18 +204,20 @@ void Plane::printRoute(){
 // ------------
 
 //---funcs to add and remove passengers
-bool Plane::addPassenger(const Passenger &passenger) {
-    if (this->currPas.size() > this->maxPas) {
+bool Plane::addPassenger(Passenger *passenger) {
+    if (this->currPas.size() < this->maxPas) {
         this->currPas.push_back(passenger);
+        passenger->setPlane(this);
         return true;
     }
     return false;
 }
 
-bool Plane::removePassenger(const Passenger &passenger) {
+bool Plane::removePassenger(Passenger *passenger) {
     for (auto it = this->currPas.begin(); it != this->currPas.end(); it++) {
         if (*it == passenger) {
             this->currPas.erase(it);
+            passenger->setPlane(nullptr);
             return true;
         }
     }

@@ -48,7 +48,7 @@ public:
 
     void printRoutes();
 
-    void moveAirplaneThroughPath(Plane *plane, std::vector<Connection *> path);
+    static void moveAirplaneThroughPath(Plane *plane, std::vector<Connection *> path);
 
     void cycleUsingDijkstra(Plane* plane, Airport* origin);
 

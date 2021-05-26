@@ -8,8 +8,11 @@
 int Passenger::idcnt = 1;
 
 //----Constructor----
-Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : id(idcnt), src(src), dest(dest),
-                                                                  plane(plane) { idcnt++; }
+Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : src(src), dest(dest),
+                                                                  plane(plane) {
+    this->id = idcnt;
+    idcnt++;
+}
 //-------------------
 
 

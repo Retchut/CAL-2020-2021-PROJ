@@ -196,7 +196,7 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     /*
      * https://en.wikipedia.org/wiki/Airbus_A350
      * The Airbus A350 constitutes the model for our planes
-     * We artifically inflated its moveSpeed, in order to prevent problems calculating some routes
+     * We artifically inflated its speed, in order to prevent problems calculating some routes
      * -speed: 2000 - 2900 km/h (*1000 m/h,
      * -fuel consumption: 5000-5800 l/h
      * -max fuel: 165000 l
@@ -238,22 +238,15 @@ void Graph::generatePlanes(size_t planeNum) {
 }
 
 void Graph::calculateSteps() {
-    unsigned long planes = planeSet.size();
-    while (planes > 0) {
-        for (Plane &p : planeSet) {
-            if (!p.hasArrived()) {
+    unsigned int activePlanes = planeSet.size();
+    while (activePlanes > 0) {
+        for (Plane &plane : planeSet) {
+            if (!plane.hasArrived()) {
                 //if the plane can't move anywhere, it returns to the origin node using Dijkstra's pathfinding algorithn
-                if(!p.nextStep()){
-                    //TODO
-                    //Dijkstra(plane *, plane->current)
-                    // returns nodes to travel through to get from current to the origin
-                    //  create a new function to move through those nodes
-                    //  move
-                    p.setArrived(true);
-                    planes--;
+                if(!plane.nextStep(activePlanes)){
+                    cycleUsingDijkstra(&plane, plane.getSourceAirport());
+                    plane.setArrived(true, activePlanes);
                 }
-            } else {
-                planes--;
             }
         }
     }
@@ -344,6 +337,7 @@ void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
         }
     }
 
+    //reverse the path and store it
     std::vector<Connection *> path = {};
     auxNode *curr = &*std::find_if(nodes.begin(), nodes.end(), [&origin](auxNode &node){
         return node.airport == origin;
@@ -359,6 +353,6 @@ void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
         curr = prev;
     }
 
+    //move through the path
     moveAirplaneThroughPath(plane, path);
-    plane->printRoute();
 }

@@ -19,7 +19,7 @@ class Plane {
 
     double fuelConsump; // l/km
     double maxFuel;
-    std::vector<Passenger> currPas;
+    std::vector<Passenger *> currPas;
     unsigned int maxPas;
     Crew* crew;
     std::vector<Airport *> visited;
@@ -51,7 +51,7 @@ public:
 
     bool hasArrived() const;
 
-    std::vector<Passenger> getCurrentPassengers() const;
+    std::vector<Passenger *> *getCurrentPassengers();
 
     // get passengers
 
@@ -62,17 +62,13 @@ public:
 
     //------setters------
     void setCrew(Crew* newCrew);
-    void setArrived(bool val);
-    // add passengers
-    // remove passengers
+    void setArrived(bool val, unsigned int &activePlanes);
     //-------------------
 
     //----other funcs----
     double calculateConsumption(const Connection &c) const;
 
     bool canMoveThrough(const Connection &c) const;
-
-    bool hasVisited(const Connection &c) const;
 
     void replaceCrew();
 
@@ -88,15 +84,14 @@ public:
 
     void movePlane(Connection *toTraverse);
 
-    bool nextStep();
+    bool nextStep(unsigned int &activePlanes);
 
     void printRoute();
 
-
     //functions to add and remove passengers
-    bool addPassenger(const Passenger&  passenger);
+    bool addPassenger(Passenger *passenger);
 
-    bool removePassenger(const Passenger&  passenger);
+    bool removePassenger(Passenger *passenger);
     //-------------------
 };
 
