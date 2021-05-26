@@ -223,6 +223,8 @@ void Graph::generateReplacementCrews() {
     unsigned int startID = planeSet.size();
     for (size_t i = 0; i < airportSet.size(); i++) {
         Airport *at = airportSet[i];
+        if(at->hasReplacementCrew())
+            continue;
         Crew *resting = new Crew(startID + i, at);
         at->setReplacementCrew(resting);
     }
