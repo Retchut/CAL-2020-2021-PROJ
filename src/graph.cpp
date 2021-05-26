@@ -7,7 +7,6 @@
 #include "graphviewer.h"
 #include "MutablePriorityQueue.h"
 
-#include <iostream>
 using Node = GraphViewer::Node;
 using Edge = GraphViewer::Edge;
 
@@ -126,8 +125,11 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     for (auto airport : airportSet) {
         Node &node0 = gv.addNode(airport->id,
                                  sf::Vector2f(airport->longitude * 10 + 800, (-airport->latitude * 10) + 4025));
-        if(airport == planeSet[planeID]->getSourceAirport() && planeID != -1){
-            node0.setColor(GraphViewer::RED);
+        if(planeID != -1){
+            if(airport == planeSet[planeID]->getSourceAirport())
+                node0.setColor(GraphViewer::RED);
+            else
+                node0.setColor(GraphViewer::BLUE);
         }
         else{
             node0.setColor(GraphViewer::BLUE);

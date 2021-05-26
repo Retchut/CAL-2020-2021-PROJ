@@ -3,7 +3,6 @@
 
 #include "graph.h"
 #include "airport.h"
-#include "plane.h"
 #include "connection.h"
 
 int loader(Graph &graph, const std::string &directory, const std::string &prefix, const std::string &suffix);
@@ -14,7 +13,7 @@ void insertNewAirport(Graph g){
     std::string name;
     double latitude;
     double longitude;
-    std::string confirm = "";
+    std::string confirm;
 
     do {
         std::cout << "Please input the airport's latitude\n";
@@ -66,7 +65,7 @@ void insertNewConnection(Graph g){
 
 }
 
-int drawIberianDataSet(){;
+int drawIberianDataSet(){
     std::cout << "Which dataset would you like to work with?\n";
     std::cout << "1-Iberian Peninsula data set\n";
     std::cout << "2-World data set\n";
@@ -88,7 +87,7 @@ int drawIberianDataSet(){;
     }
 }
 
-int readInput(Graph g){
+int readInput(Graph *g){
     std::cout << "1-Insert Airport\n";
     std::cout << "2-Insert Connection\n";
     std::cout << "3-Stop making changes and run the program\n";
@@ -99,11 +98,11 @@ int readInput(Graph g){
     while(true){
         std::getline(std::cin,input);
         if(input == "1"){
-            insertNewAirport(g);
+            insertNewAirport(*g);
             return 1;
         }
         if(input == "2"){
-            insertNewConnection(g);
+            insertNewConnection(*g);
             return 2;
         }
         if(input == "3"){
@@ -182,7 +181,7 @@ int getRplcNum(){
 
 int getTrackedPlane(int maxPlanes){
 
-    std::cout << "Please input the ID of the plane whose route you'd like to display on the graph viewer (min 1).\n";
+    std::cout << "Please input the ID of the plane whose route you'd like to display on the graph viewer (min 0).\n";
     std::cout << "Input -1 to see all planes's routes.\n";
     int id = 0;
     std::string input;
@@ -208,7 +207,7 @@ int getTrackedPlane(int maxPlanes){
 
 int main() {
     std::cout << "-----Welcome to FightNet!-----\n\n";
-    /*
+
     while(true){
         srand(time(0));
         Graph g;
@@ -224,7 +223,7 @@ int main() {
         }
 
         while(true){
-            int input = readInput(g);
+            int input = readInput(&g);
 
             //display graph
             if(input == 3){
@@ -234,11 +233,11 @@ int main() {
             else if(input == 0){
                 return 0;
             }
-            //keep altering the graph
+            //keep modifying the graph
         }
         int passengerNum = getPassengerNum();
         int planeNum = getPlaneNum();
-        //int replacementNum = getRplcNum();
+        //int replacementNum = getRplcNum();    //dropped feature
         int trackedPlaneID = getTrackedPlane(planeNum);
 
         g.generatePassengers(passengerNum);
@@ -249,41 +248,4 @@ int main() {
         g.viewGraph("", trackedPlaneID);
         std::cout << "\n";
     }
-     */
-    Graph g;
-    //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-    loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
-
-    g.generatePassengers(1000);
-    g.generatePlanes(30);
-    g.generateReplacementCrews();
-    g.calculateSteps();
-    g.printRoutes();
-    //g.viewGraph("", 0);
-
-    /*
-    //Test dijkstra
-    Graph g;
-    loader(g, "../airports_datasets/dijkstra_test/", "", ".txt");
-    g.generatePassengers(1);
-    g.generatePlanes(1);
-    g.generateReplacementCrews();
-    Plane p1 = g.getPlanes()[0];
-    //A to B
-    std::vector<Connection> p1c = *p1.getCurrentAirport()->getConnections();
-    Connection *AtoBid1 = &p1c[0];
-    p1.movePlane(AtoBid1);
-
-    //B to C
-    std::vector<Connection> p2c = *p1.getCurrentAirport()->getConnections();
-    Connection *BtoCid4 = &p2c[1];
-    p1.movePlane(BtoCid4);
-
-    //C to D
-    std::vector<Connection> p3c = *p1.getCurrentAirport()->getConnections();
-    Connection *CtoDid4 = &p3c[2];
-    p1.movePlane(CtoDid4);
-
-    g.cycleUsingDijkstra(&p1, p1.getSourceAirport());
-    */
 }

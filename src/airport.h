@@ -58,9 +58,7 @@ public:
     //-------------------
 
     //----other funcs----
-    void disembark(Plane* plane);
     bool embark(Plane* plane, Passenger *passenger);
-    void disembark(Plane* plane, Passenger *passenger);
     void addPassenger(Passenger *toAdd);
     void updatePassengers(Plane* plane);
     bool hasReplacementCrew();

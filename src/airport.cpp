@@ -115,21 +115,6 @@ bool Airport::embark(Plane *plane, Passenger *passenger) {
     return false;
 }
 
-void Airport::disembark(Plane *plane) {
-    for(auto pass : *(plane->getCurrentPassengers())){
-        disembark(plane, pass);
-    }
-}
-
-void Airport::disembark(Plane *plane, Passenger *passenger) {
-    if(plane->removePassenger(passenger)){
-        if(passenger->getDestination()->getId() != this->id)
-            this->passengers.push_back(passenger);
-        else
-            delete passenger;
-    }
-}
-
 void Airport::addPassenger(Passenger *toAdd){
     this->passengers.push_back(toAdd);
 }

@@ -169,7 +169,6 @@ void Plane::movePlane(Connection *toTraverse){
 }
 
 bool Plane::nextStep(unsigned int &activePlanes) {
-    //std::cout << visited[visited.size()-1]->getId() << "\n";
     Connection *c = calculateBestConnection();
 
     //if we can't directly move anywhere, we use dijkstra to return to the origin
