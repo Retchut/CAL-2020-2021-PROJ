@@ -11,6 +11,9 @@
 using Node = GraphViewer::Node;
 using Edge = GraphViewer::Edge;
 
+std::vector<Plane> Graph::getPlanes(){
+    return this->planeSet;
+}
 int Graph::getAirportNum() const {
     return airportSet.size();
 }
@@ -204,7 +207,9 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     unsigned int consumption = 4.8 + (rand() % 5);
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
-    unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
+    //unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
+    unsigned int test = airportSet.size();
+    unsigned int airportId = 1;
     Plane newPlane = Plane(id, findAirport(airportId), speed, consumption / speed, maxFuel, maxPass, nullptr,
                            this->airportSet.size());
     //generate crew
@@ -332,4 +337,5 @@ void Graph::cycleUsingDijkstra(Plane *plane, Airport *origin) {
             }
         }
     }
+    std::cout << "end\n";
 }

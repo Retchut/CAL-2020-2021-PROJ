@@ -86,6 +86,8 @@ public:
 
     Connection* calculateBestConnection();
 
+    void movePlane(Connection *toTraverse);
+
     bool nextStep();
 
     void printRoute();

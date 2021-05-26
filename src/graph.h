@@ -23,6 +23,7 @@ private:
     void generateRandomPlane(const unsigned int& planeNum);
 
 public:
+    std::vector<Plane> getPlanes();
     int getAirportNum() const;
 
     int getConnectionNum() const;

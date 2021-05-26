@@ -2,6 +2,9 @@
 #include <string>
 
 #include "graph.h"
+#include "airport.h"
+#include "plane.h"
+#include "connection.h"
 
 int loader(Graph &graph, const std::string &directory, const std::string &prefix, const std::string &suffix);
 
@@ -205,9 +208,9 @@ int getTrackedPlane(int maxPlanes){
 
 int main() {
     std::cout << "-----Welcome to FightNet!-----\n\n";
-    srand(time(0));
-
+    /*
     while(true){
+        srand(time(0));
         Graph g;
         switch(drawIberianDataSet()){
             case 1:
@@ -246,6 +249,7 @@ int main() {
         g.viewGraph("", trackedPlaneID);
         std::cout << "\n";
     }
+     */
     /*
     Graph g;
     //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
@@ -258,4 +262,24 @@ int main() {
     g.printRoutes();
     g.viewGraph("", 0);
     */
+
+    //Test dijkstra
+    Graph g;
+    loader(g, "../airports_datasets/dijkstra_test/", "", ".txt");
+    g.generatePassengers(1);
+    g.generatePlanes(1);
+    g.generateReplacementCrews();
+    Plane p1 = g.getPlanes()[0];
+    //A to B
+    std::vector<Connection> p1c = *p1.getCurrentAirport()->getConnections();
+    Connection *AtoBid1 = &p1c[0];
+    p1.movePlane(AtoBid1);
+
+    //B to C
+    std::vector<Connection> p2c = *p1.getCurrentAirport()->getConnections();
+    Connection *BtoCid4 = &p2c[1];
+    p1.movePlane(BtoCid4);
+    g.cycleUsingDijkstra(&p1, p1.getSourceAirport());
+    std::cout << "idk\n";
+
 }

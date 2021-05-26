@@ -84,7 +84,7 @@ void Plane::replaceCrew() {
 
 void Plane::traverseEdge(Connection *toTraverse){
     this->route.push_back(toTraverse);
-    this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
+    //this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
 }
 
 void Plane::visitAirport(Airport *next) {
@@ -134,6 +134,7 @@ Connection *Plane::calculateBestConnection() {
             if(c.getDestination() == this->src)
                 return &c;
         }
+        return nullptr;
     }
 
     std::vector<std::pair<Connection *, double>> vals = {};
@@ -162,14 +163,20 @@ Connection *Plane::calculateBestConnection() {
     return vals.empty() ? nullptr :  vals[0].first;
 }
 
+void Plane::movePlane(Connection *toTraverse){
+    this->traverseEdge(toTraverse);
+    this->visitAirport(toTraverse->getDestination());
+}
+
 bool Plane::nextStep() {
     std::cout << this->visited[this->visited.size() - 1]->getId() << "\n";  //debug print
     Connection *c = calculateBestConnection();
-    //if we can't move directly anywhere, we use djkstra
+
+    //if we can't directly move anywhere, we use dijkstra to return to the origin
     if(c == nullptr)
         return false;
-    traverseEdge(c);
-    visitAirport(c->getDestination());
+
+    movePlane(c);
 
     //if we could move directly to the plane's source node
     if(c->getDestination() == src){
