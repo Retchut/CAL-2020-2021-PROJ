@@ -20,7 +20,7 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
 //----Destructor-----
 Airport::~Airport() {
     connections.clear();
-    delete this->replCrew;
+    //delete this->replCrew;
     for(auto pass : passengers){
         delete pass;
     }

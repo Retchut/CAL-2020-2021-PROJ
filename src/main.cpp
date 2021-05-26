@@ -208,44 +208,42 @@ int getTrackedPlane(int maxPlanes){
 int main() {
     std::cout << "-----Welcome to FightNet!-----\n\n";
 
-    while(true){
-        srand(time(0));
-        Graph g;
-        switch(drawIberianDataSet()){
-            case 1:
-                loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
-                break;
-            case 2:
-                loader(g,"../airports_datasets/airports_full/",  "", ".txt");
-                break;
-            case 0:
-                return 0;
-        }
-
-        while(true){
-            int input = readInput(&g);
-
-            //display graph
-            if(input == 3){
-                break;
-            }
-            //end execution of program
-            else if(input == 0){
-                return 0;
-            }
-            //keep modifying the graph
-        }
-        int passengerNum = getPassengerNum();
-        int planeNum = getPlaneNum();
-        //int replacementNum = getRplcNum();    //dropped feature
-        int trackedPlaneID = getTrackedPlane(planeNum);
-
-        g.generatePassengers(passengerNum);
-        g.generatePlanes(planeNum);
-        g.generateReplacementCrews();
-        g.calculateSteps();
-        g.printRoutes();
-        g.viewGraph("", trackedPlaneID);
-        std::cout << "\n";
+    srand(time(0));
+    Graph g;
+    switch(drawIberianDataSet()){
+        case 1:
+            loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
+            break;
+        case 2:
+            loader(g,"../airports_datasets/airports_full/",  "", ".txt");
+            break;
+        case 0:
+            return 0;
     }
+
+    while(true){
+        int input = readInput(&g);
+
+        //display graph
+        if(input == 3){
+            break;
+        }
+        //end execution of program
+        else if(input == 0){
+            return 0;
+        }
+        //keep modifying the graph
+    }
+    int passengerNum = getPassengerNum();
+    int planeNum = getPlaneNum();
+    //int replacementNum = getRplcNum();    //dropped feature
+    int trackedPlaneID = getTrackedPlane(planeNum);
+
+    g.generatePassengers(passengerNum);
+    g.generatePlanes(planeNum);
+    g.generateReplacementCrews();
+    g.calculateSteps();
+    g.printRoutes();
+    g.viewGraph("", trackedPlaneID);
+    std::cout << "\n";
 }
