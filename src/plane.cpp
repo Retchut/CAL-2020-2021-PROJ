@@ -80,6 +80,10 @@ void Plane::replaceCrew() {
     this->curr->setReplacementCrew(oldCrew);
 }
 
+bool Plane::canReplaceCrew() {
+    return this->curr->hasReplacementCrew();
+}
+
 void Plane::traverseEdge(Connection *toTraverse){
     this->route.push_back(toTraverse);
     //this->crew->decrementHours(toTraverse->getDistance() / this->getSpeed());
@@ -88,12 +92,6 @@ void Plane::traverseEdge(Connection *toTraverse){
 void Plane::visitAirport(Airport *next) {
     this->curr = next;
     this->visited.push_back(next);
-}
-
-void Plane::updateCrew() {
-    if(this->crew->getHours() <= 0.0 && this->getCurrentAirport()->hasReplacementCrew()){
-        replaceCrew();
-    }
 }
 
 void Plane::dropOffPassengers() {
@@ -109,7 +107,7 @@ double Plane::calculateConsumption(const Connection &c) const {
     return fuelConsump * dist;
 }
 
-bool Plane::canMoveThrough(const Connection &c) const {
+bool Plane::canMoveThrough(const Connection &c) {
     //TODO: weather makes us return false
     if (!c.getDestination()->getAccessibility())
         return false;
@@ -117,15 +115,25 @@ bool Plane::canMoveThrough(const Connection &c) const {
     double h = this->getCrew()->getHours();
     double s = this->getSpeed();
     double dist = c.getDistance();
-    if (this->getCrew()->getHours() * this->speed < c.getDistance())
-        return false;
 
     for(Airport* visit : visited){
         if (visit->getId() == c.getDestination()->getId())
             return false;
     }
 
-    return calculateConsumption(c) <= this->maxFuel;
+    if(calculateConsumption(c) > this->maxFuel)
+        return true;
+
+    if (this->getCrew()->getHours() * this->speed < c.getDistance()) {
+        //if the path would take more than a full shift to traverse
+        //or we can't replace a crew
+        if(this->getCrew()->getHours() == 8.0 || !canReplaceCrew())
+            return false;
+        else
+            replaceCrew();
+    }
+
+    return true;
 }
 
 Connection *Plane::calculateBestConnection() {

@@ -68,15 +68,15 @@ public:
     //----other funcs----
     double calculateConsumption(const Connection &c) const;
 
-    bool canMoveThrough(const Connection &c) const;
+    bool canMoveThrough(const Connection &c);
+
+    bool canReplaceCrew();
 
     void replaceCrew();
 
     void traverseEdge(Connection *toTraverse);
 
     void visitAirport(Airport *next);
-
-    void updateCrew();
 
     void dropOffPassengers();
 

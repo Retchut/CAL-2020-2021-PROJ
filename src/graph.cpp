@@ -196,13 +196,13 @@ void Graph::generateRandomPlane(const unsigned int &id) {
      * https://en.wikipedia.org/wiki/Airbus_A350
      * The Airbus A350 constitutes the model for our planes
      * We artifically inflated its speed, in order to prevent problems calculating some routes
-     * -speed: 2000 - 2900 km/h (*1000 m/h,
+     * -speed: 2500 - 3400 km/h (*1000 m/h)
      * -fuel consumption: 5000-5800 l/h
      * -max fuel: 165000 l
      * -passenger: 350-410
      */
     //generate plane at a pseudo random airport
-    unsigned int speed = 2000000 + (rand() % 90000);
+    unsigned int speed = 2500000 + (rand() % 90000);
     unsigned int consumption = 4.8 + (rand() % 5);
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
