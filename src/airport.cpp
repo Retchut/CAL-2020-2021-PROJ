@@ -20,11 +20,10 @@ Airport::Airport(const int &id, const double &latitude, const double &longitude,
 //----Destructor-----
 Airport::~Airport() {
     connections.clear();
-    /*
-    if(this->replCrew != nullptr){
-        delete this->replCrew;
+    delete this->replCrew;
+    for(auto pass : passengers){
+        delete pass;
     }
-    */
 }
 //-------------------
 
@@ -126,8 +125,8 @@ void Airport::disembark(Plane *plane, Passenger *passenger) {
     if(plane->removePassenger(passenger)){
         if(passenger->getDestination()->getId() != this->id)
             this->passengers.push_back(passenger);
-        //else
-        //    delete passenger;
+        else
+            delete passenger;
     }
 }
 

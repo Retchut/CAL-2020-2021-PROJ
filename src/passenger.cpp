@@ -17,7 +17,7 @@ Passenger::Passenger(Airport *src, Airport *dest, Plane *plane) : src(src), dest
 
 
 //----Destructor-----
-Passenger::~Passenger() {}
+Passenger::~Passenger() = default;
 //-------------------
 
 

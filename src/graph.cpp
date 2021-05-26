@@ -11,7 +11,7 @@
 using Node = GraphViewer::Node;
 using Edge = GraphViewer::Edge;
 
-std::vector<Plane> Graph::getPlanes(){
+std::vector<Plane *> Graph::getPlanes(){
     return this->planeSet;
 }
 int Graph::getAirportNum() const {
@@ -107,15 +107,12 @@ bool Graph::removeAirport(const int &id) {
 }
 
 Graph::~Graph() {
-    /*
-    int c = 0;
     for (auto a : airportSet) {
-        if (a != nullptr){
-            delete a;
-            a = nullptr;
-        }
-        c++;
-    }*/
+        delete a;
+    }
+    for(auto p : planeSet){
+        delete p;
+    }
 }
 
 void Graph::viewGraph(const std::string &imgPath, int planeID) const {
@@ -129,7 +126,7 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
     for (auto airport : airportSet) {
         Node &node0 = gv.addNode(airport->id,
                                  sf::Vector2f(airport->longitude * 10 + 800, (-airport->latitude * 10) + 4025));
-        if(airport == planeSet[planeID].getSourceAirport() && planeID != -1){
+        if(airport == planeSet[planeID]->getSourceAirport() && planeID != -1){
             node0.setColor(GraphViewer::RED);
         }
         else{
@@ -160,7 +157,7 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
         std::vector<size_t> usedIDs;
         for (size_t i = 0; i < planeSet.size(); i++) {
             auto color = colors[i%12];
-            for (auto connection : planeSet[i].getRoute()) {
+            for (auto connection : planeSet[i]->getRoute()) {
                 unsigned int id = connection->getId();
                 if(std::find(usedIDs.begin(), usedIDs.end(), id) != usedIDs.end()){
                     id = availableID;
@@ -175,7 +172,7 @@ void Graph::viewGraph(const std::string &imgPath, int planeID) const {
         }
     }
     else{//Display the selected plane's route
-        for (auto connection : planeSet[planeID].getRoute()) {
+        for (auto connection : planeSet[planeID]->getRoute()) {
             Edge &edge =
                     gv.addEdge(connection->getId(), gv.getNode(connection->getOrigin()->getId()), gv.getNode(connection->getDestination()->getId()),
                                GraphViewer::Edge::EdgeType::DIRECTED);
@@ -207,18 +204,16 @@ void Graph::generateRandomPlane(const unsigned int &id) {
     unsigned int consumption = 4.8 + (rand() % 5);
     unsigned int maxFuel = 165000;
     unsigned int maxPass = 350 + (rand() % 350);
-    //unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
-    unsigned int test = airportSet.size();
-    unsigned int airportId = 1;
-    Plane newPlane = Plane(id, findAirport(airportId), speed, consumption / speed, maxFuel, maxPass, nullptr,
+    unsigned int airportId = (rand() % airportSet.size()) + 1;    // 1 - size
+    Plane *newPlane = new Plane(id, findAirport(airportId), speed, consumption / speed, maxFuel, maxPass, nullptr,
                            this->airportSet.size());
     //generate crew
-    Crew *crew = new Crew(id, &newPlane);
-    newPlane.setCrew(crew);
+    Crew *crew = new Crew(id, newPlane);
+    newPlane->setCrew(crew);
     //visit the airport of origin
-    newPlane.visitAirport(newPlane.getCurrentAirport());
+    newPlane->visitAirport(newPlane->getCurrentAirport());
     //update passengers
-    newPlane.getCurrentAirport()->updatePassengers(&newPlane);
+    newPlane->getCurrentAirport()->updatePassengers(newPlane);
     planeSet.push_back(newPlane);
 }
 
@@ -240,12 +235,12 @@ void Graph::generatePlanes(size_t planeNum) {
 void Graph::calculateSteps() {
     unsigned int activePlanes = planeSet.size();
     while (activePlanes > 0) {
-        for (Plane &plane : planeSet) {
-            if (!plane.hasArrived()) {
+        for (Plane *plane : planeSet) {
+            if (!plane->hasArrived()) {
                 //if the plane can't move anywhere, it returns to the origin node using Dijkstra's pathfinding algorithn
-                if(!plane.nextStep(activePlanes)){
-                    cycleUsingDijkstra(&plane, plane.getSourceAirport());
-                    plane.setArrived(true, activePlanes);
+                if(!plane->nextStep(activePlanes)){
+                    cycleUsingDijkstra(plane, plane->getSourceAirport());
+                    plane->setArrived(true, activePlanes);
                 }
             }
         }
@@ -254,7 +249,7 @@ void Graph::calculateSteps() {
 
 void Graph::printRoutes(){
     for(auto p : planeSet){
-        p.printRoute();
+        p->printRoute();
     }
 }
 

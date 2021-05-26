@@ -17,13 +17,14 @@ class Connection;
 class Graph {
 private:
     std::vector<Airport *> airportSet;    // vertex set
-    std::vector<Plane> planeSet;
+    std::vector<Plane *> planeSet;
     std::set<int> connectionIds;
 
-    void generateRandomPlane(const unsigned int& planeNum);
+    void generateRandomPlane(const unsigned int& id);
 
 public:
-    std::vector<Plane> getPlanes();
+    std::vector<Plane *> getPlanes();
+
     int getAirportNum() const;
 
     int getConnectionNum() const;

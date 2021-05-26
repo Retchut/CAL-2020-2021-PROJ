@@ -254,8 +254,8 @@ int main() {
     //loader(g,"../airports_datasets/airports_full/",  "", ".txt");
     loader(g, "../airports_datasets/airports_iberia/", "", ".txt");
 
-    g.generatePassengers(10);
-    g.generatePlanes(6);
+    g.generatePassengers(1000);
+    g.generatePlanes(30);
     g.generateReplacementCrews();
     g.calculateSteps();
     g.printRoutes();

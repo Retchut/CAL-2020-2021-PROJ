@@ -30,13 +30,10 @@ Plane::Plane(unsigned int id, Airport *src, double speed, double fuelConsump, do
 
 //----Destructor-----
 Plane::~Plane(){
-
-    /*
-    if(this->crew != nullptr){
-        delete this->crew;
+    for(auto pass : currPas){
+        delete pass;
     }
-    */
-
+    delete this->crew;
 }
 //-------------------
 
@@ -95,9 +92,7 @@ void Plane::visitAirport(Airport *next) {
 
 void Plane::updateCrew() {
     if(this->crew->getHours() <= 0.0 && this->getCurrentAirport()->hasReplacementCrew()){
-        Crew *newCrew = this->getCurrentAirport()->getReplacementCrew();
-        this->getCurrentAirport()->setReplacementCrew(this->crew);
-        this->setCrew(newCrew);
+        replaceCrew();
     }
 }
 
@@ -174,6 +169,7 @@ void Plane::movePlane(Connection *toTraverse){
 }
 
 bool Plane::nextStep(unsigned int &activePlanes) {
+    //std::cout << visited[visited.size()-1]->getId() << "\n";
     Connection *c = calculateBestConnection();
 
     //if we can't directly move anywhere, we use dijkstra to return to the origin
